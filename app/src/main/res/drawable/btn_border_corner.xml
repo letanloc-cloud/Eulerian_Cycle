@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by Lê Tấn Lộc on 15:10 18/01/2019
+  ~ Copyright (c) 2019 . All rights reserved.
+  ~ Last modified 22:43 14/01/2019
+  -->
+
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <stroke android:width="2dp" android:color="#0000ff"/>
     <solid android:color="#ffffff"/>

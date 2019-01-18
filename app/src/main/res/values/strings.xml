@@ -1,3 +1,9 @@
+<!--
+  ~ Created by Lê Tấn Lộc on 15:10 18/01/2019
+  ~ Copyright (c) 2019 . All rights reserved.
+  ~ Last modified 02:45 18/01/2019
+  -->
+
 <resources>
     <string name="app_name">Eulerian Cycle</string>
 </resources>
