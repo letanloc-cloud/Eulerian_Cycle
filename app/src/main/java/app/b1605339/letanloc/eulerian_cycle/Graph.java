@@ -40,7 +40,7 @@ public class Graph {
     public void addEdge(int x, int y) {
         //System.out.println("\naddEdge(" + x + "," + y + ")");
 
-        if (!(x == y || this.graphMatrix.get(x).get(y))) { //don't add an edge has one vertices or an edge was being added
+        if (!(x == y || this.graphMatrix.get(x).get(y))) { //don't add an edge has one vertices or an edge was added
             //add edge (x,y)
             ArrayList<Boolean> verticesX = new ArrayList<>(this.graphMatrix.get(x));
             verticesX.set(y, true);
@@ -66,12 +66,52 @@ public class Graph {
         }
     }
 
+    //depthFirstSearchRecursion
+    private void visit(int u, ArrayList<Boolean> verticesVisitList) {
+        //u visited
+        if (verticesVisitList.get(u)) {
+            return;
+        }
+
+        //System.out.print(" " + u + " "); //print to show dfs
+        //u was visited
+        verticesVisitList.set(u, true);
+
+        for (int i = 0; i < this.numberOfVertices; i++) {
+            if ((i != u) && this.graphMatrix.get(u).get(i)) {
+                visit(i, verticesVisitList);
+            }
+        }
+    }
+
+    public ArrayList<Boolean> depthFirstSearch(int u) {
+        ArrayList<Boolean> verticesVisitList = new ArrayList<Boolean>(this.numberOfVertices);
+
+        for (int i = 0; i < this.numberOfVertices; i++) {
+            verticesVisitList.add(false);
+        }
+
+        visit(u, verticesVisitList);
+
+        return verticesVisitList;
+    }
+
     //test
-    /*public static void main(String args[]) {
-        Graph graph = new Graph(5);
-        graph.addEdge(3, 4);
+    public static void main(String args[]) {
+        Graph graph = new Graph(7);
+        /*graph.addEdge(3, 4);
         graph.addEdge(4, 2);
         graph.addEdge(2, 4);
-        graph.addEdge(3, 3);
-    }*/
+        graph.addEdge(3, 3);*/
+
+        graph.addEdge(0, 1);
+        graph.addEdge(0, 4);
+        graph.addEdge(0, 5);
+        graph.addEdge(1, 2);
+        graph.addEdge(1, 3);
+        graph.addEdge(3, 4);
+        //graph.addEdge(5, 6);
+
+        graph.depthFirstSearch(0);
+    }
 }
