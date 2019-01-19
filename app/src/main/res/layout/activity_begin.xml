@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Created by Lê Tấn Lộc on 15:10 18/01/2019
   ~ Copyright (c) 2019 . All rights reserved.
   ~ Last modified 03:34 18/01/2019
@@ -98,6 +97,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
         android:layout_weight="2">
 
         <LinearLayout
@@ -221,7 +221,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_margin="8dp"
+        android:background="@drawable/btn_border_corner"
+        android:padding="8dp"
         android:text="Chu trình Euler"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:textColor="#000000"
+        android:textSize="18sp" />
 
 </LinearLayout>

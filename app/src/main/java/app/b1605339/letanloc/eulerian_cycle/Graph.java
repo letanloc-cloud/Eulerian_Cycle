@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class Graph {
     //adjacency matrix
-    //public int numberOfEdge = 0;
+    //private int numberOfEdge = 0;
 
     private int numberOfVertices;   //vertices or nodes or points
 
@@ -84,16 +84,75 @@ public class Graph {
         }
     }
 
-    public ArrayList<Boolean> depthFirstSearch(int u) {
-        ArrayList<Boolean> verticesVisitList = new ArrayList<Boolean>(this.numberOfVertices);
-
+    private void depthFirstSearch(int u, ArrayList<Boolean> verticesVisitList) {
         for (int i = 0; i < this.numberOfVertices; i++) {
             verticesVisitList.add(false);
         }
-
         visit(u, verticesVisitList);
+    }
 
-        return verticesVisitList;
+    Boolean isConnected() {
+
+
+        int i;
+        for (i = 0; i < this.numberOfVertices; i++) {
+            Boolean checkBreak = false;
+            for (int j = 0; j < this.numberOfVertices; j++) {
+                //if vertices i has edge (i,j), move to next vertices i++
+                if (this.graphMatrix.get(i).get(j)) {
+                    break;
+                } else {
+                    if (j == (this.numberOfVertices - 1)) {
+                        checkBreak = true;
+                    }
+                }
+            }
+            if (checkBreak) break; //this vertices has no edge, out for-loop
+        }
+
+        //all vertices have edge
+        if (i == this.numberOfVertices) {
+            return true;
+        }
+
+        ArrayList<Boolean> verticesVisitList = new ArrayList<Boolean>(this.numberOfVertices);
+        depthFirstSearch(i, verticesVisitList);
+
+        for (i = 0; i < this.numberOfVertices; i++) {
+            for (int j = 0; j < this.numberOfVertices; j++) {
+                //if vertices i has edge (i,j) and it wasn't visited, return false
+                if (!verticesVisitList.get(i) && this.graphMatrix.get(i).get(j)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public int isEulerian() {
+
+        int sumCheck = 0;
+        for (int i = 0; i < this.numberOfVertices; i++) {
+            int check = 0;
+            for (int j = 0; j < this.numberOfVertices; i++) {
+                if (this.graphMatrix.get(i).get(j)) {
+                    check++;
+                }
+            }
+            if ((check % 2) == 0) {
+                sumCheck++;
+            }
+        }
+        if (sumCheck > 0) {
+            return -1;
+        }
+
+        if (sumCheck == 2) {
+
+        }
+
+        return numberOfVertices;
     }
 
     //test
@@ -110,8 +169,14 @@ public class Graph {
         graph.addEdge(1, 2);
         graph.addEdge(1, 3);
         graph.addEdge(3, 4);
-        //graph.addEdge(5, 6);
+        graph.addEdge(5, 6);
 
-        graph.depthFirstSearch(0);
+        /*graph.addEdge(0, 1);
+        graph.addEdge(1, 2);
+        graph.addEdge(2, 3);*/
+
+        Boolean test = new Boolean(graph.isConnected());
+        System.out.println(test);
+
     }
 }
