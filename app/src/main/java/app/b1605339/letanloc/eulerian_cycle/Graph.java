@@ -21,6 +21,7 @@ public class Graph {
     edge.add(y);
     graph.add(edge);*/
 
+    //constructor
     public Graph(int numberOfVertices) {
         this.numberOfVertices = numberOfVertices;
 
@@ -91,9 +92,7 @@ public class Graph {
         visit(u, verticesVisitList);
     }
 
-    Boolean isConnected() {
-
-
+    private Boolean isConnected() {
         int i;
         for (i = 0; i < this.numberOfVertices; i++) {
             Boolean checkBreak = false;
@@ -120,6 +119,7 @@ public class Graph {
 
         for (i = 0; i < this.numberOfVertices; i++) {
             for (int j = 0; j < this.numberOfVertices; j++) {
+                //detect if graph has no edgde and
                 //if vertices i has edge (i,j) and it wasn't visited, return false
                 if (!verticesVisitList.get(i) && this.graphMatrix.get(i).get(j)) {
                     return false;
@@ -130,38 +130,49 @@ public class Graph {
         return true;
     }
 
+
+    //0: graph is not Eulerian
+    //1: graph has a Euler path
+    //2: graph has a Euler cycle
     public int isEulerian() {
+
+        if (!this.isConnected()) {
+            return 0;
+        }
 
         int sumCheck = 0;
         for (int i = 0; i < this.numberOfVertices; i++) {
             int check = 0;
-            for (int j = 0; j < this.numberOfVertices; i++) {
+            for (int j = 0; j < this.numberOfVertices; j++) {
                 if (this.graphMatrix.get(i).get(j)) {
                     check++;
                 }
             }
-            if ((check % 2) == 0) {
+            if ((check % 2) != 0) {
                 sumCheck++;
             }
         }
-        if (sumCheck > 0) {
-            return -1;
+
+        //graph has more than two odd vertices
+        if (sumCheck > 2) {
+            return 0;
         }
 
+        //graph has two odd vertices =>
         if (sumCheck == 2) {
-
+            return 1;
         }
 
-        return numberOfVertices;
+        return 2;
     }
 
     //test
-    public static void main(String args[]) {
+    /*public static void main(String args[]) {
         Graph graph = new Graph(7);
-        /*graph.addEdge(3, 4);
-        graph.addEdge(4, 2);
-        graph.addEdge(2, 4);
-        graph.addEdge(3, 3);*/
+        //graph.addEdge(3, 4);
+        //graph.addEdge(4, 2);
+        //graph.addEdge(2, 4);
+        //graph.addEdge(3, 3);
 
         graph.addEdge(0, 1);
         graph.addEdge(0, 4);
@@ -171,12 +182,72 @@ public class Graph {
         graph.addEdge(3, 4);
         graph.addEdge(5, 6);
 
-        /*graph.addEdge(0, 1);
-        graph.addEdge(1, 2);
-        graph.addEdge(2, 3);*/
+        //graph.addEdge(0, 1);
+        //graph.addEdge(1, 2);
+        //graph.addEdge(2, 3);
 
         Boolean test = new Boolean(graph.isConnected());
+
         System.out.println(test);
 
+    }*/
+
+    void test() {
+        int res = isEulerian();
+        if (res == 0)
+            System.out.println("graph is not Eulerian");
+        else if (res == 1)
+            System.out.println("graph has a Euler path");
+        else
+            System.out.println("graph has a Euler cycle");
+    }
+
+    // Driver method
+    public static void main(String args[]) {
+        // Let us create and test graphs shown in above figures
+        Graph g1 = new Graph(5);
+        g1.addEdge(1, 0);
+        g1.addEdge(0, 2);
+        g1.addEdge(2, 1);
+        g1.addEdge(0, 3);
+        g1.addEdge(3, 4);
+        g1.test();
+
+        Graph g2 = new Graph(5);
+        g2.addEdge(1, 0);
+        g2.addEdge(0, 2);
+        g2.addEdge(2, 1);
+        g2.addEdge(0, 3);
+        g2.addEdge(3, 4);
+        g2.addEdge(4, 0);
+        g2.test();
+
+        Graph g3 = new Graph(5);
+        g3.addEdge(1, 0);
+        g3.addEdge(0, 2);
+        g3.addEdge(2, 1);
+        g3.addEdge(0, 3);
+        g3.addEdge(3, 4);
+        g3.addEdge(1, 3);
+        g3.test();
+
+        // Let us create a graph with 3 vertices
+        // connected in the form of cycle
+        Graph g4 = new Graph(3);
+        g4.addEdge(0, 1);
+        g4.addEdge(1, 2);
+        g4.addEdge(2, 0);
+        g4.test();
+
+        // Let us create a graph with all veritces
+        // with zero degree
+        Graph g5 = new Graph(3);
+        g5.test();
+
+        Graph g6 = new Graph(4);
+        g6.addEdge(0, 1);
+        g6.addEdge(0, 2);
+        g6.addEdge(0, 3);
+        g6.test();
     }
 }
