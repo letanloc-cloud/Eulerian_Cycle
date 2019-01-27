@@ -99,11 +99,7 @@ public class Graph {
             for (int j = 0; j < this.numberOfVertices; j++) {
                 //if vertices i has edge (i,j), move to next vertices i++
                 if (this.graphMatrix.get(i).get(j)) {
-                    break;
-                } else {
-                    if (j == (this.numberOfVertices - 1)) {
-                        checkBreak = true;
-                    }
+                    checkBreak = true;
                 }
             }
             if (checkBreak) break; //this vertices has no edge, out for-loop
@@ -241,13 +237,14 @@ public class Graph {
 
         // Let us create a graph with all veritces
         // with zero degree
+        //Không tạo thành đồ thị
         Graph g5 = new Graph(3);
         g5.test();
 
         Graph g6 = new Graph(4);
         g6.addEdge(0, 1);
         g6.addEdge(0, 2);
-        g6.addEdge(0, 3);
+        g6.addEdge(1, 2);
         g6.test();
     }
 }
