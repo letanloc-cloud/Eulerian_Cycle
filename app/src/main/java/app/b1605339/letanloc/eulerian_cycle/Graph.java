@@ -96,8 +96,9 @@ public class Graph {
         int i;
         for (i = 0; i < this.numberOfVertices; i++) {
             Boolean checkBreak = false;
+            // Find a vertex with non-zero degree
+            // Tìm 1 đỉnh có bậc khác bậc 0
             for (int j = 0; j < this.numberOfVertices; j++) {
-                //if vertices i has edge (i,j), move to next vertices i++
                 if (this.graphMatrix.get(i).get(j)) {
                     checkBreak = true;
                 }
@@ -105,7 +106,7 @@ public class Graph {
             if (checkBreak) break; //this vertices has no edge, out for-loop
         }
 
-        //all vertices have edge
+        // If there are no edges in the graph, return true
         if (i == this.numberOfVertices) {
             return true;
         }
@@ -115,7 +116,6 @@ public class Graph {
 
         for (i = 0; i < this.numberOfVertices; i++) {
             for (int j = 0; j < this.numberOfVertices; j++) {
-                //detect if graph has no edgde and
                 //if vertices i has edge (i,j) and it wasn't visited, return false
                 if (!verticesVisitList.get(i) && this.graphMatrix.get(i).get(j)) {
                     return false;
@@ -246,5 +246,14 @@ public class Graph {
         g6.addEdge(0, 2);
         g6.addEdge(1, 2);
         g6.test();
+
+        Graph g7 = new Graph(6);
+        g7.addEdge(0, 1);
+        g7.addEdge(0, 2);
+        g7.addEdge(1, 2);
+        g7.addEdge(3, 4);
+        g7.addEdge(3, 5);
+        g7.addEdge(4, 5);
+        g7.test();
     }
 }
