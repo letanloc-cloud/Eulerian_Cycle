@@ -207,13 +207,14 @@ public class Graph {
     }
 
     private Boolean isNotBridge(Integer u, Integer i) {
-        int j;
-        for (j = i; j < this.numberOfVertices; j++) {
-            if (this.graphMatrix.get(u).get(j)) {
-                break;
-            }
+        int countVertex = 0;
+        for (int j = 0; j < this.numberOfVertices; j++) {
+                if (this.graphMatrix.get(u).get(j)) {
+                    countVertex++;
+                }
         }
-        if (j == this.numberOfVertices) {
+        if (countVertex == 1) {
+            this.removeEdge(u, i);
             return true;
         }
 
@@ -221,7 +222,8 @@ public class Graph {
         this.removeEdge(u, i);
 
         int count2 = this.countConnectedComponents();
-        if (count1 > count2) {
+
+        if (count1 < count2) {
             this.addEdge(u, i);
             return false;
         } else {
@@ -345,5 +347,18 @@ public class Graph {
         g8.removeEdge(0, 1);
         System.out.println("");
         g8.printGraph();*/
+
+        Graph g1 = new Graph(4);
+        g1.addEdge(0, 1);
+        g1.addEdge(0, 2);
+        g1.addEdge(1, 2);
+        g1.addEdge(2, 3);
+        g1.printEulerian(2);
+
+        Graph g2 = new Graph(3);
+        g2.addEdge(0, 1);
+        g2.addEdge(1, 2);
+        g2.addEdge(2, 0);
+        g2.printEulerian(0);
     }
 }
