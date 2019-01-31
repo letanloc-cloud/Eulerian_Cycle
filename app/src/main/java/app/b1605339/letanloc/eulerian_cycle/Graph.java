@@ -38,23 +38,37 @@ public class Graph {
         //this.printGraph();
     }
 
+    public Graph(Graph graph) {
+        this.numberOfVertices = graph.numberOfVertices;
+        this.graphMatrix = new ArrayList<ArrayList<Boolean>>(graph.graphMatrix);
+    }
+
+    private void changeEdge(int x, int y, Boolean value) {
+
+        //add edge (x,y)
+        ArrayList<Boolean> verticesX = new ArrayList<>(this.graphMatrix.get(x));
+        verticesX.set(y, value);
+        this.graphMatrix.set(x, verticesX);
+
+        //add edge (y,x)
+        ArrayList<Boolean> verticesY = new ArrayList<>(this.graphMatrix.get(y));
+        verticesY.set(x, value);
+        this.graphMatrix.set(y, verticesY);
+
+        //numberOfEdge++;
+        //this.printGraph();
+    }
+
     public void addEdge(int x, int y) {
         //System.out.println("\naddEdge(" + x + "," + y + ")");
-
         if (!(x == y || this.graphMatrix.get(x).get(y))) { //don't add an edge has one vertices or an edge was added
-            //add edge (x,y)
-            ArrayList<Boolean> verticesX = new ArrayList<>(this.graphMatrix.get(x));
-            verticesX.set(y, true);
-            this.graphMatrix.set(x, verticesX);
-
-            //add edge (y,x)
-            ArrayList<Boolean> verticesY = new ArrayList<>(this.graphMatrix.get(y));
-            verticesY.set(x, true);
-            this.graphMatrix.set(y, verticesY);
-
-            //numberOfEdge++;
-            //this.printGraph();
+            changeEdge(x, y, true);
         }
+
+    }
+
+    public void removeEdge(int x, int y) {
+        changeEdge(x, y, false);
     }
 
     public void printGraph() {
@@ -162,6 +176,58 @@ public class Graph {
         return 2;
     }
 
+    public int countConnectedComponents() {
+        int count = 0;
+        ArrayList<Boolean> verticesVisitList = new ArrayList<Boolean>(this.numberOfVertices);
+        for (int i = 0; i < this.numberOfVertices; i++) {
+            verticesVisitList.add(false);
+        }
+        for (int i = 0; i < this.numberOfVertices; i++) {
+            if (!verticesVisitList.get(i)) {
+                depthFirstSearch(i, verticesVisitList);
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public void chooseVertexStart() {
+
+    }
+
+    public void printEulerian(Integer u) {
+        for (int i = 0; i < numberOfVertices; i++) {
+            if (this.graphMatrix.get(u).get(i)) {
+                if (isNotBridge(u, i)) {
+                    System.out.println(u + "-" + i + " ");
+                    printEulerian(i);
+                }
+            }
+        }
+    }
+
+    private Boolean isNotBridge(Integer u, Integer i) {
+        int j;
+        for (j = i; j < this.numberOfVertices; j++) {
+            if (this.graphMatrix.get(u).get(j)) {
+                break;
+            }
+        }
+        if (j == this.numberOfVertices) {
+            return true;
+        }
+
+        int count1 = this.countConnectedComponents();
+        this.removeEdge(u, i);
+
+        int count2 = this.countConnectedComponents();
+        if (count1 > count2) {
+            this.addEdge(u, i);
+            return false;
+        } else {
+            return true;
+        }
+    }
     //test
     /*public static void main(String args[]) {
         Graph graph = new Graph(7);
@@ -200,6 +266,7 @@ public class Graph {
 
     // Driver method
     public static void main(String args[]) {
+        /*
         // Let us create and test graphs shown in above figures
         Graph g1 = new Graph(5);
         g1.addEdge(1, 0);
@@ -208,6 +275,7 @@ public class Graph {
         g1.addEdge(0, 3);
         g1.addEdge(3, 4);
         g1.test();
+        System.out.println("Count connected components: " + g1.countConnectedComponents());
 
         Graph g2 = new Graph(5);
         g2.addEdge(1, 0);
@@ -217,6 +285,7 @@ public class Graph {
         g2.addEdge(3, 4);
         g2.addEdge(4, 0);
         g2.test();
+        System.out.println("Count connected components: " + g2.countConnectedComponents());
 
         Graph g3 = new Graph(5);
         g3.addEdge(1, 0);
@@ -226,6 +295,7 @@ public class Graph {
         g3.addEdge(3, 4);
         g3.addEdge(1, 3);
         g3.test();
+        System.out.println("Count connected components: " + g3.countConnectedComponents());
 
         // Let us create a graph with 3 vertices
         // connected in the form of cycle
@@ -234,19 +304,21 @@ public class Graph {
         g4.addEdge(1, 2);
         g4.addEdge(2, 0);
         g4.test();
+        System.out.println("Count connected components: " + g4.countConnectedComponents());
 
         // Let us create a graph with all veritces
         // with zero degree
         //Không tạo thành đồ thị
         Graph g5 = new Graph(3);
         g5.test();
+        System.out.println("Count connected components: " + g5.countConnectedComponents());
 
         Graph g6 = new Graph(4);
         g6.addEdge(0, 1);
         g6.addEdge(0, 2);
         g6.addEdge(1, 2);
         g6.test();
-
+        System.out.println("Count connected components: " + g6.countConnectedComponents());
         Graph g7 = new Graph(6);
         g7.addEdge(0, 1);
         g7.addEdge(0, 2);
@@ -255,5 +327,23 @@ public class Graph {
         g7.addEdge(3, 5);
         g7.addEdge(4, 5);
         g7.test();
+        System.out.println("Count connected components: " + g7.countConnectedComponents());*/
+
+        Graph g8 = new Graph(5);
+        g8.addEdge(1, 0);
+        g8.addEdge(0, 2);
+        g8.addEdge(2, 1);
+        g8.addEdge(0, 3);
+        g8.addEdge(3, 4);
+        g8.addEdge(3, 2);
+        g8.addEdge(3, 1);
+        g8.addEdge(2, 4);
+        g8.printGraph();
+        g8.printEulerian(0);
+        g8.printGraph();
+        /*g8.printGraph();
+        g8.removeEdge(0, 1);
+        System.out.println("");
+        g8.printGraph();*/
     }
 }
