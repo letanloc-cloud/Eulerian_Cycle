@@ -42,6 +42,10 @@ public class Graph {
         this.numberOfVertices = graph.numberOfVertices;
         this.graphMatrix = new ArrayList<ArrayList<Boolean>>(graph.graphMatrix);
     }
+    public void coppyGraph(Graph graph){
+        this.numberOfVertices = graph.numberOfVertices;
+        this.graphMatrix = new ArrayList<ArrayList<Boolean>>(graph.graphMatrix);
+    }
 
     private void changeEdge(int x, int y, Boolean value) {
 
@@ -192,6 +196,39 @@ public class Graph {
     }
 
     public void chooseVertexStart() {
+        Graph tempGraph = new Graph(this);
+        int res = this.isEulerian();
+        if (res == 2) {
+            for (int i = 0; i < this.numberOfVertices; i++) {
+                for (int j = 0; j < this.numberOfVertices; j++) {
+                    if (this.graphMatrix.get(i).get(j)) {
+                        System.out.println(i);
+                        this.printEulerian(i);
+                        this.coppyGraph(tempGraph);
+                        return;
+                    }
+                }
+
+            }
+        } else if (res == 1) {
+            for (int i = 0; i < this.numberOfVertices; i++) {
+                int check = 0;
+                for (int j = 0; j < this.numberOfVertices; j++) {
+                    if (this.graphMatrix.get(i).get(j)) {
+                        check++;
+                    }
+                }
+                if ((check % 2) != 0) {
+                    System.out.println(i);
+                    this.printEulerian(i);
+                    this.coppyGraph(tempGraph);
+                    return;
+                }
+            }
+        } else {
+            System.out.println(res);
+            return;
+        }
 
     }
 
@@ -209,9 +246,9 @@ public class Graph {
     private Boolean isNotBridge(Integer u, Integer i) {
         int countVertex = 0;
         for (int j = 0; j < this.numberOfVertices; j++) {
-                if (this.graphMatrix.get(u).get(j)) {
-                    countVertex++;
-                }
+            if (this.graphMatrix.get(u).get(j)) {
+                countVertex++;
+            }
         }
         if (countVertex == 1) {
             this.removeEdge(u, i);
@@ -340,8 +377,13 @@ public class Graph {
         g8.addEdge(3, 2);
         g8.addEdge(3, 1);
         g8.addEdge(2, 4);
+        System.out.println("Graph");
         g8.printGraph();
-        g8.printEulerian(0);
+        System.out.println("Eulerian");
+        //g8.printEulerian(0);
+        System.out.println("Choose");
+        g8.test();
+        g8.chooseVertexStart();
         g8.printGraph();
         /*g8.printGraph();
         g8.removeEdge(0, 1);
@@ -353,12 +395,18 @@ public class Graph {
         g1.addEdge(0, 2);
         g1.addEdge(1, 2);
         g1.addEdge(2, 3);
-        g1.printEulerian(2);
+        System.out.println("Eulerian");
+        //g1.printEulerian(2);
+        System.out.println("Choose");
+        g1.chooseVertexStart();
 
         Graph g2 = new Graph(3);
         g2.addEdge(0, 1);
         g2.addEdge(1, 2);
         g2.addEdge(2, 0);
-        g2.printEulerian(0);
+        System.out.println("Eulerian");
+        //g2.printEulerian(0);
+        System.out.println("Choose");
+        g2.chooseVertexStart();
     }
 }
