@@ -15,56 +15,218 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class BeginActivity extends AppCompatActivity {
+    private Graph graph = new Graph(0);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_begin);
 
+
         Button btnEulerianCycle = (Button) findViewById(R.id.btnEulerianCycle);
         btnEulerianCycle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText etSoDinh = (EditText) findViewById(R.id.etSoDinh);
-                Graph graph = new Graph(Integer.parseInt(etSoDinh.getText().toString()));
+                if (etSoDinh.getText().toString().isEmpty()) {
+                    etSoDinh.setError("Nhập số đỉnh");
+                    //Toast.makeText(BeginActivity.this, "Nhập số đỉnh", Toast.LENGTH_LONG).show();
+                    return;
+                } else {
+                    int sodinh = Integer.parseInt(etSoDinh.getText().toString());
+                    if (sodinh != graph.getNumberOfVertices()) {
+                        graph = new Graph(sodinh);
+                        String maxtrix = new String("");
+                        for (int i = 0; i < graph.getNumberOfVertices(); i++) {
+                            for (int j = 0; j < graph.getNumberOfVertices(); j++) {
+                                maxtrix = maxtrix + graph.printEdge(i, j) + " ";
+                            }
+                            maxtrix = maxtrix + System.getProperty("line.separator");
+                        }
+                        EditText etMaTran = (EditText) findViewById(R.id.etMaTran);
+                        etMaTran.setText(maxtrix);
+                    }
+                }
 
-                graph.addEdge(3, 4);
+                TextView tvKetQua = (TextView) findViewById(R.id.tvKetQua);
+                tvKetQua.setText("");
+                tvKetQua.setText(graph.getEulerianCycle());
+
+                TextView tvSoMienLienThong = (TextView) findViewById(R.id.tvSoMienLienThong);
+                tvSoMienLienThong.setText("");
+                tvSoMienLienThong.setText(graph.countConnectedComponents());
+                /*graph.addEdge(3, 4);
                 graph.addEdge(4, 2);
                 graph.addEdge(2, 4);
-                graph.addEdge(3, 3);
+                graph.addEdge(3, 3);*/
             }
         });
 
 
+        final EditText etDinh1 = (EditText) findViewById(R.id.etDinh1);
+        final EditText etDinh2 = (EditText) findViewById(R.id.etDinh2);
 
-        /*EditText etDinh2 = (EditText) findViewById(R.id.etDinh2);
-        ArrayList<TextView> tvList1 = new ArrayList<TextView>();
-        ArrayList<TextView> tvList2 = new ArrayList<TextView>();
-        etDinh2.addTextChangedListener(new TextWatcher() {
+        Button btnThem = (Button) findViewById(R.id.btnThem);
+        btnThem.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(etDinh2.getText().toString.equals("")){
-                    LinearLayout llDinh1 = (LinearLayout) findViewById(R.id.llDinh1);
-                    EditText etSoDinhNew = new EditText(BeginActivity.this);
-                    llDinh1.addView(etSoDinhNew);
-                    etSoDinhNew.setText(String.valueOf(etSoDinhNew.getId()));
-
+            public void onClick(View v) {
+                EditText etSoDinh = (EditText) findViewById(R.id.etSoDinh);
+                if (etSoDinh.getText().toString().isEmpty()) {
+                    etSoDinh.setError("Nhập số đỉnh");
+                    //Toast.makeText(BeginActivity.this, "Nhập số đỉnh", Toast.LENGTH_LONG).show();
+                    return;
+                } else {
+                    int sodinh = Integer.parseInt(etSoDinh.getText().toString());
+                    if (sodinh != graph.getNumberOfVertices()) {
+                        graph = new Graph(sodinh);
+                        String maxtrix = new String("");
+                        for (int i = 0; i < graph.getNumberOfVertices(); i++) {
+                            for (int j = 0; j < graph.getNumberOfVertices(); j++) {
+                                maxtrix = maxtrix + graph.printEdge(i, j) + " ";
+                            }
+                            maxtrix = maxtrix + System.getProperty("line.separator");
+                        }
+                        EditText etMaTran = (EditText) findViewById(R.id.etMaTran);
+                        etMaTran.setText(maxtrix);
+                    }
                 }
-            }
 
+                if (etDinh1.getText().toString().isEmpty()) {
+                    etDinh1.setError("Nhập đỉnh 1");
+                    return;
+                }
+                if (etDinh2.getText().toString().isEmpty()) {
+                    etDinh2.setError("Nhập đỉnh 2");
+                    return;
+                }
+
+                Integer x = Integer.parseInt(etDinh1.getText().toString());
+                Integer y = Integer.parseInt(etDinh2.getText().toString());
+
+                if (x < 0) {
+                    etDinh1.setError("Đỉnh phải lớn hơn hoặc bằng 0");
+                    return;
+                }
+                if (y < 0) {
+                    etDinh2.setError("Đỉnh phải lớn hơn hoặc bằng 0");
+                    return;
+                }
+
+                if (x >= graph.getNumberOfVertices()) {
+                    etDinh1.setError("Đỉnh phải nhỏ hơn số đỉnh");
+                    return;
+                }
+                if (y >= graph.getNumberOfVertices()) {
+                    etDinh2.setError("Đỉnh phải nhỏ hơn số đỉnh");
+                    return;
+                }
+
+                graph.addEdge(x, y);
+                etDinh1.setText("");
+                etDinh2.setText("");
+                String maxtrix = new String("");
+                for (int i = 0; i < graph.getNumberOfVertices(); i++) {
+                    for (int j = 0; j < graph.getNumberOfVertices(); j++) {
+                        maxtrix = maxtrix + graph.printEdge(i, j) + " ";
+                    }
+                    maxtrix = maxtrix + System.getProperty("line.separator");
+                }
+                EditText etMaTran = (EditText) findViewById(R.id.etMaTran);
+                etMaTran.setText(maxtrix);
+
+                TextView tvKetQua = (TextView) findViewById(R.id.tvKetQua);
+                tvKetQua.setText("");
+                tvKetQua.setText(graph.getEulerianCycle());
+
+                TextView tvSoMienLienThong = (TextView) findViewById(R.id.tvSoMienLienThong);
+                tvSoMienLienThong.setText("");
+                tvSoMienLienThong.setText(graph.countConnectedComponents());
+            }
+        });
+
+        Button btnXoa = (Button) findViewById(R.id.btnXoa);
+        btnXoa.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void afterTextChanged(Editable s) {
+            public void onClick(View v) {
+                EditText etSoDinh = (EditText) findViewById(R.id.etSoDinh);
+                if (etSoDinh.getText().toString().isEmpty()) {
+                    etSoDinh.setError("Nhập số đỉnh");
+                    //Toast.makeText(BeginActivity.this, "Nhập số đỉnh", Toast.LENGTH_LONG).show();
+                    return;
+                } else {
+                    int sodinh = Integer.parseInt(etSoDinh.getText().toString());
+                    if (sodinh != graph.getNumberOfVertices()) {
+                        graph = new Graph(sodinh);
+                        String maxtrix = new String("");
+                        for (int i = 0; i < graph.getNumberOfVertices(); i++) {
+                            for (int j = 0; j < graph.getNumberOfVertices(); j++) {
+                                maxtrix = maxtrix + graph.printEdge(i, j) + " ";
+                            }
+                            maxtrix = maxtrix + System.getProperty("line.separator");
+                        }
+                        EditText etMaTran = (EditText) findViewById(R.id.etMaTran);
+                        etMaTran.setText(maxtrix);
+                    }
+                }
 
+                if (etDinh1.getText().toString().isEmpty()) {
+                    etDinh1.setError("Nhập đỉnh 1");
+                    return;
+                }
+                if (etDinh2.getText().toString().isEmpty()) {
+                    etDinh2.setError("Nhập đỉnh 2");
+                    return;
+                }
+
+                Integer x = Integer.parseInt(etDinh1.getText().toString());
+                Integer y = Integer.parseInt(etDinh2.getText().toString());
+
+                if (x < 0) {
+                    etDinh1.setError("Đỉnh phải lớn hơn hoặc bằng 0");
+                    return;
+                }
+                if (y < 0) {
+                    etDinh2.setError("Đỉnh phải lớn hơn hoặc bằng 0");
+                    return;
+                }
+
+                if (x >= graph.getNumberOfVertices()) {
+                    etDinh1.setError("Đỉnh phải nhỏ hơn số đỉnh");
+                    return;
+                }
+                if (y >= graph.getNumberOfVertices()) {
+                    etDinh2.setError("Đỉnh phải nhỏ hơn số đỉnh");
+                    return;
+                }
+
+                graph.removeEdge(x, y);
+                etDinh1.setText("");
+                etDinh2.setText("");
+
+                String maxtrix = new String("");
+                for (int i = 0; i < graph.getNumberOfVertices(); i++) {
+                    for (int j = 0; j < graph.getNumberOfVertices(); j++) {
+                        maxtrix = maxtrix + graph.printEdge(i, j) + " ";
+                    }
+                    maxtrix = maxtrix + System.getProperty("line.separator");
+                }
+                EditText etMaTran = (EditText) findViewById(R.id.etMaTran);
+                etMaTran.setText(maxtrix);
+
+                TextView tvKetQua = (TextView) findViewById(R.id.tvKetQua);
+                tvKetQua.setText("");
+                tvKetQua.setText(graph.getEulerianCycle());
+
+                TextView tvSoMienLienThong = (TextView) findViewById(R.id.tvSoMienLienThong);
+                tvSoMienLienThong.setText("");
+                tvSoMienLienThong.setText(graph.countConnectedComponents());
             }
-        });*/
+        });
+
     }
 }

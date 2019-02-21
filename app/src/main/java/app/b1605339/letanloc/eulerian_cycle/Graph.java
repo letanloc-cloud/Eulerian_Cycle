@@ -15,6 +15,9 @@ public class Graph {
     private int numberOfVertices;   //vertices or nodes or points
 
     private ArrayList<ArrayList<Boolean>> graphMatrix;
+
+    private String eulerianCycle = new String("");
+
     /*add edge into graph
     ArrayList<Boolean> edge = new ArrayList<Boolean>();
     edge.add(x);
@@ -42,7 +45,8 @@ public class Graph {
         this.numberOfVertices = graph.numberOfVertices;
         this.graphMatrix = new ArrayList<ArrayList<Boolean>>(graph.graphMatrix);
     }
-    public void coppyGraph(Graph graph){
+
+    public void coppyGraph(Graph graph) {
         this.numberOfVertices = graph.numberOfVertices;
         this.graphMatrix = new ArrayList<ArrayList<Boolean>>(graph.graphMatrix);
     }
@@ -84,6 +88,21 @@ public class Graph {
             System.out.print("\n");
         }
     }
+
+    public String printEdge(int i, int j) {
+        return (this.graphMatrix.get(i).get(j) ? "1" : "0");
+    }
+
+    public int getNumberOfVertices() {
+        return numberOfVertices;
+    }
+
+    public String getEulerianCycle() {
+        eulerianCycle = "";
+        this.chooseVertexStart();
+        return eulerianCycle;
+    }
+
 
     //depthFirstSearchRecursion
     private void visit(int u, ArrayList<Boolean> verticesVisitList) {
@@ -222,11 +241,13 @@ public class Graph {
                     System.out.println(i);
                     this.printEulerian(i);
                     this.coppyGraph(tempGraph);
+                    eulerianCycle = "Đồ thị chỉ có đường đi Euler\nĐồ thị không có chu trình Euler";
                     return;
                 }
             }
         } else {
             System.out.println(res);
+            eulerianCycle = "Đồ thị không có chu trình Euler";
             return;
         }
 
@@ -237,6 +258,7 @@ public class Graph {
             if (this.graphMatrix.get(u).get(i)) {
                 if (isNotBridge(u, i)) {
                     System.out.println(u + "-" + i + " ");
+                    eulerianCycle = eulerianCycle + u + "-" + i + " ";
                     printEulerian(i);
                 }
             }
@@ -390,7 +412,7 @@ public class Graph {
         System.out.println("");
         g8.printGraph();*/
 
-        Graph g1 = new Graph(4);
+        /*Graph g1 = new Graph(4);
         g1.addEdge(0, 1);
         g1.addEdge(0, 2);
         g1.addEdge(1, 2);
@@ -407,6 +429,12 @@ public class Graph {
         System.out.println("Eulerian");
         //g2.printEulerian(0);
         System.out.println("Choose");
-        g2.chooseVertexStart();
+        g2.chooseVertexStart();*/
+
+        Graph g10 = new Graph(4);
+        g10.addEdge(0, 1);
+        System.out.println(g10.countConnectedComponents());
+
+
     }
 }
