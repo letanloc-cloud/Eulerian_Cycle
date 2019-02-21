@@ -28,42 +28,11 @@ public class BeginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_begin);
 
 
-        Button btnEulerianCycle = (Button) findViewById(R.id.btnEulerianCycle);
-        btnEulerianCycle.setOnClickListener(new View.OnClickListener() {
+        Button btnSaveGraphAsFile = (Button) findViewById(R.id.btnSaveGraphAsFile);
+        btnSaveGraphAsFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText etSoDinh = (EditText) findViewById(R.id.etSoDinh);
-                if (etSoDinh.getText().toString().isEmpty()) {
-                    etSoDinh.setError("Nhập số đỉnh");
-                    //Toast.makeText(BeginActivity.this, "Nhập số đỉnh", Toast.LENGTH_LONG).show();
-                    return;
-                } else {
-                    int sodinh = Integer.parseInt(etSoDinh.getText().toString());
-                    if (sodinh != graph.getNumberOfVertices()) {
-                        graph = new Graph(sodinh);
-                        String maxtrix = new String("");
-                        for (int i = 0; i < graph.getNumberOfVertices(); i++) {
-                            for (int j = 0; j < graph.getNumberOfVertices(); j++) {
-                                maxtrix = maxtrix + graph.printEdge(i, j) + " ";
-                            }
-                            maxtrix = maxtrix + System.getProperty("line.separator");
-                        }
-                        EditText etMaTran = (EditText) findViewById(R.id.etMaTran);
-                        etMaTran.setText(maxtrix);
-                    }
-                }
 
-                TextView tvKetQua = (TextView) findViewById(R.id.tvKetQua);
-                tvKetQua.setText("");
-                tvKetQua.setText(graph.getEulerianCycle());
-
-                TextView tvSoMienLienThong = (TextView) findViewById(R.id.tvSoMienLienThong);
-                tvSoMienLienThong.setText("");
-                tvSoMienLienThong.setText(graph.countConnectedComponents() + "");
-                /*graph.addEdge(3, 4);
-                graph.addEdge(4, 2);
-                graph.addEdge(2, 4);
-                graph.addEdge(3, 3);*/
             }
         });
 
