@@ -59,7 +59,7 @@ public class BeginActivity extends AppCompatActivity {
 
                 TextView tvSoMienLienThong = (TextView) findViewById(R.id.tvSoMienLienThong);
                 tvSoMienLienThong.setText("");
-                tvSoMienLienThong.setText(graph.countConnectedComponents());
+                tvSoMienLienThong.setText(graph.countConnectedComponents() + "");
                 /*graph.addEdge(3, 4);
                 graph.addEdge(4, 2);
                 graph.addEdge(2, 4);
@@ -145,7 +145,7 @@ public class BeginActivity extends AppCompatActivity {
 
                 TextView tvSoMienLienThong = (TextView) findViewById(R.id.tvSoMienLienThong);
                 tvSoMienLienThong.setText("");
-                tvSoMienLienThong.setText(graph.countConnectedComponents());
+                tvSoMienLienThong.setText(graph.countConnectedComponents() + "");
             }
         });
 
@@ -224,7 +224,7 @@ public class BeginActivity extends AppCompatActivity {
 
                 TextView tvSoMienLienThong = (TextView) findViewById(R.id.tvSoMienLienThong);
                 tvSoMienLienThong.setText("");
-                tvSoMienLienThong.setText(graph.countConnectedComponents());
+                tvSoMienLienThong.setText(graph.countConnectedComponents() + "");
             }
         });
 
