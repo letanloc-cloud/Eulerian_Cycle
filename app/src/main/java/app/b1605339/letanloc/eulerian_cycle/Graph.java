@@ -222,6 +222,8 @@ public class Graph {
                 for (int j = 0; j < this.numberOfVertices; j++) {
                     if (this.graphMatrix.get(i).get(j)) {
                         System.out.println(i);
+                        eulerianCycle = "";
+                        eulerianCycle = "Đồ thị có chu trình Euler\n";
                         this.printEulerian(i);
                         this.coppyGraph(tempGraph);
                         return;

@@ -7,6 +7,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="app.b1605339.letanloc.eulerian_cycle">
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"

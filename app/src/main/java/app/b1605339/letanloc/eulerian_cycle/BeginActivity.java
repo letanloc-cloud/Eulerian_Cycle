@@ -28,11 +28,26 @@ public class BeginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_begin);
 
 
-        Button btnSaveGraphAsFile = (Button) findViewById(R.id.btnSaveGraphAsFile);
+        final Button btnSaveGraphAsFile = (Button) findViewById(R.id.btnSaveGraphAsFile);
         btnSaveGraphAsFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EditText etTenFile = (EditText) findViewById(R.id.etTenFile);
+                if (etTenFile.getText().toString().isEmpty()) {
+                    etTenFile.setError("Nhập tên file");
+                } else {
+                    EditText etMaTran = (EditText) findViewById(R.id.etMaTran);
+                    String fileName = etTenFile.getText().toString();
+                    String fileContent = etMaTran.getText().toString();
+                    FileOperations fop = new FileOperations();
+                    Boolean write = fop.write(fileName, fileContent);
 
+                    if (write) {
+                        Toast.makeText(BeginActivity.this, "Successful", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(BeginActivity.this, "Fail", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
 
