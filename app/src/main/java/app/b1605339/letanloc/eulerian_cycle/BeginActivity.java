@@ -68,6 +68,24 @@ public class BeginActivity extends AppCompatActivity {
                     } else if (sodinh == 0) {
                         etSoDinh.setError("Số đỉnh phải lớn hơn 0");
                         return;
+                    } else {
+                        String maxtrix = new String("");
+                        for (int i = 0; i < graph.getNumberOfVertices(); i++) {
+                            for (int j = 0; j < graph.getNumberOfVertices(); j++) {
+                                maxtrix = maxtrix + graph.printEdge(i, j) + " ";
+                            }
+                            maxtrix = maxtrix + System.getProperty("line.separator");
+                        }
+                        EditText etMaTran = (EditText) findViewById(R.id.etMaTran);
+                        etMaTran.setText(maxtrix);
+
+                        TextView tvKetQua = (TextView) findViewById(R.id.tvKetQua);
+                        tvKetQua.setText("");
+                        tvKetQua.setText(graph.getEulerianCycle());
+
+                        TextView tvSoMienLienThong = (TextView) findViewById(R.id.tvSoMienLienThong);
+                        tvSoMienLienThong.setText("");
+                        tvSoMienLienThong.setText(graph.countConnectedComponents() + "");
                     }
                 }
             }

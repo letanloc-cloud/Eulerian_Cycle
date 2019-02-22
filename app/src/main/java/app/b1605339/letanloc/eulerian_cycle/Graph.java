@@ -218,12 +218,12 @@ public class Graph {
         Graph tempGraph = new Graph(this);
         int res = this.isEulerian();
         if (res == 2) {
+            eulerianCycle = "";
+            eulerianCycle = "Đồ thị có chu trình Euler\n";
             for (int i = 0; i < this.numberOfVertices; i++) {
                 for (int j = 0; j < this.numberOfVertices; j++) {
                     if (this.graphMatrix.get(i).get(j)) {
                         System.out.println(i);
-                        eulerianCycle = "";
-                        eulerianCycle = "Đồ thị có chu trình Euler\n";
                         this.printEulerian(i);
                         this.coppyGraph(tempGraph);
                         return;
