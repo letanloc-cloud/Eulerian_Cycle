@@ -27,6 +27,53 @@ public class BeginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_begin);
 
+        final EditText etSoDinh = (EditText) findViewById(R.id.etSoDinh);
+        etSoDinh.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                EditText etSoDinh = (EditText) findViewById(R.id.etSoDinh);
+                int sodinh = 0;
+                if (!etSoDinh.getText().toString().isEmpty()) {
+                    sodinh = Integer.parseInt(etSoDinh.getText().toString());
+                    if (sodinh == 1) {
+
+                        String maxtrix = new String("");
+                        for (int i = 0; i < graph.getNumberOfVertices(); i++) {
+                            for (int j = 0; j < graph.getNumberOfVertices(); j++) {
+                                maxtrix = maxtrix + graph.printEdge(i, j) + " ";
+                            }
+                            maxtrix = maxtrix + System.getProperty("line.separator");
+                        }
+                        EditText etMaTran = (EditText) findViewById(R.id.etMaTran);
+                        etMaTran.setText(maxtrix);
+
+                        TextView tvKetQua = (TextView) findViewById(R.id.tvKetQua);
+                        tvKetQua.setText("");
+                        tvKetQua.setText(graph.getEulerianCycle());
+
+                        TextView tvSoMienLienThong = (TextView) findViewById(R.id.tvSoMienLienThong);
+                        tvSoMienLienThong.setText("");
+                        tvSoMienLienThong.setText(graph.countConnectedComponents() + "");
+                        return;
+                    } else if (sodinh == 0) {
+                        etSoDinh.setError("Số đỉnh phải lớn hơn 0");
+                        return;
+                    }
+                }
+            }
+
+        });
+
 
         final Button btnSaveGraphAsFile = (Button) findViewById(R.id.btnSaveGraphAsFile);
         btnSaveGraphAsFile.setOnClickListener(new View.OnClickListener() {
