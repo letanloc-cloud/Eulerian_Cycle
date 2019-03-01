@@ -56,50 +56,181 @@ public class Dinh extends View {
         paint.setColor(Color.BLUE);
         canvas.drawLine(200, 200, 400, 400, paint);*/
 
+        paint.setColor(Color.WHITE);
+        canvas.drawPaint(paint);
+
 
         paint = new Paint();
+        paint.setAntiAlias(true);
         int touchVertex = -1;
         if (actionTouch == 1) {
             for (int i = 0; i < listX.size(); i++) {
                 if (Math.sqrt(Math.pow((listX.get(i) - x), 2) + Math.pow((listY.get(i) - y), 2)) <= 20) {
                     paint.setColor(Color.BLUE);
                     canvas.drawText(i + "", x + 100, y, paint);
-
                     touchVertex = i;
                     break;
                 }
             }
         }
 
-        if (actionTouch == 2) {
-            paint.setColor(Color.RED);
-            canvas.drawCircle(x, y, 20, paint);
+        //Khi người dùng click
+        if (actionTouch == 1) {
+            //Vẽ lại đồ thị
+            for (int i = 0; i < listX.size(); i++) {
+                paint = new Paint();
+                paint.setAntiAlias(true);
+                paint.setColor(Color.BLUE);
+                canvas.drawCircle(listX.get(i), listY.get(i), 20, paint);
+                paint.setColor(Color.WHITE);
+                paint.setTextAlign(Paint.Align.CENTER);
+                paint.setTextSize(20f);
+                canvas.drawText(i + "", listX.get(i), listY.get(i) + 10, paint);
+            }
+
+            if (touchVertex != -1) {
+                //Nếu đã có đỉnh => đổi màu
+                for (int i = 0; i < listX.size(); i++) {
+                    paint = new Paint();
+                    paint.setAntiAlias(true);
+                    paint.setColor(Color.BLUE);
+
+                    //Đổi màu tại đỉnh click vào
+                    if (touchVertex == i) {
+                        paint.setColor(Color.RED);
+                    }
+                    canvas.drawCircle(listX.get(i), listY.get(i), 20, paint);
+                    paint.setColor(Color.WHITE);
+                    paint.setTextAlign(Paint.Align.CENTER);
+                    paint.setTextSize(20f);
+                    canvas.drawText(i + "", listX.get(i), listY.get(i) + 10, paint);
+                }
+            } else {
+                //Nếu chưa có đỉnh => add vào
+
+                //Nếu quá gần thì không add
+                boolean touchArea = false;
+                for (int i = 0; i < listX.size(); i++) {
+                    if (Math.sqrt(Math.pow((listX.get(i) - x), 2) + Math.pow((listY.get(i) - y), 2)) <= 100) {
+                        touchArea = true;
+                        break;
+                    }
+                }
+
+                if (!touchArea) {
+                    listX.add(x);
+                    listY.add(y);
+                    //Vẽ lại đồ thị
+                    for (int i = 0; i < listX.size(); i++) {
+                        paint = new Paint();
+                        paint.setAntiAlias(true);
+                        paint.setColor(Color.BLUE);
+                        canvas.drawCircle(listX.get(i), listY.get(i), 20, paint);
+                        paint.setColor(Color.WHITE);
+                        paint.setTextAlign(Paint.Align.CENTER);
+                        paint.setTextSize(20f);
+                        canvas.drawText(i + "", listX.get(i), listY.get(i) + 10, paint);
+                    }
+                }
+            }
             actionTouch = 0;
         }
 
-        for (int i = 0; i < listX.size(); i++) {
+        if (actionTouch == 2) {
+            //Vẽ lại đồ thị
+            for (int i = 0; i < listX.size(); i++) {
+                paint = new Paint();
+                paint.setAntiAlias(true);
+                paint.setColor(Color.BLUE);
+                canvas.drawCircle(listX.get(i), listY.get(i), 20, paint);
+                paint.setColor(Color.WHITE);
+                paint.setTextAlign(Paint.Align.CENTER);
+                paint.setTextSize(20f);
+                canvas.drawText(i + "", listX.get(i), listY.get(i) + 10, paint);
+            }
+
+            boolean touchArea = false;
+            for (int i = 0; i < listX.size(); i++) {
+                if (Math.sqrt(Math.pow((listX.get(i) - x), 2) + Math.pow((listY.get(i) - y), 2)) <= 100) {
+                    touchArea = true;
+                    break;
+                }
+            }
+
+            //Di chuyển
+            if (!touchArea) {
+                paint = new Paint();
+                paint.setAntiAlias(true);
+                paint.setColor(Color.RED);
+                canvas.drawCircle(x, y, 20, paint);
+                paint.setColor(Color.WHITE);
+                paint.setTextAlign(Paint.Align.CENTER);
+                paint.setTextSize(20f);
+                canvas.drawText("", x, y + 10, paint);
+                actionTouch = 0;
+            }
+        }
+
+        if (actionTouch == 3) {
+            //Vẽ lại đồ thị
+            for (int i = 0; i < listX.size(); i++) {
+                paint = new Paint();
+                paint.setAntiAlias(true);
+                paint.setColor(Color.BLUE);
+                canvas.drawCircle(listX.get(i), listY.get(i), 20, paint);
+                paint.setColor(Color.WHITE);
+                paint.setTextAlign(Paint.Align.CENTER);
+                paint.setTextSize(20f);
+                canvas.drawText(i + "", listX.get(i), listY.get(i) + 10, paint);
+            }
+
+            //Nếu quá gần thì không add
+            boolean touchArea = false;
+            for (int i = 0; i < listX.size(); i++) {
+                if (Math.sqrt(Math.pow((listX.get(i) - x), 2) + Math.pow((listY.get(i) - y), 2)) <= 100) {
+                    touchArea = true;
+                    break;
+                }
+            }
+            if(!touchArea){
+                listX.add(x);
+                listY.add(y);
+                for (int i = 0; i < listX.size(); i++) {
+                    paint = new Paint();
+                    paint.setAntiAlias(true);
+                    paint.setColor(Color.BLUE);
+                    canvas.drawCircle(listX.get(i), listY.get(i), 20, paint);
+                    paint.setColor(Color.WHITE);
+                    paint.setTextAlign(Paint.Align.CENTER);
+                    paint.setTextSize(20f);
+                    canvas.drawText(i + "", listX.get(i), listY.get(i) + 10, paint);
+                }
+            }
+        }
+
+        /*for (int i = 0; i < listX.size(); i++) {
             paint = new Paint();
             paint.setColor(Color.BLUE);
             canvas.drawCircle(listX.get(i), listY.get(i), 20, paint);
             paint.setColor(Color.WHITE);
             paint.setTextAlign(Paint.Align.CENTER);
             paint.setTextSize(20f);
-            canvas.drawText(i + "", listX.get(i), listY.get(i)+ 10, paint);
+            canvas.drawText(i + "", listX.get(i), listY.get(i) + 10, paint);
         }
 
         for (int i = 0; i < listStartX.size(); i++) {
             paint.setColor(Color.BLUE);
             canvas.drawLine(listStartX.get(i), listStartY.get(i), listStopX.get(i), listStopY.get(i), paint);
-        }
+        }*/
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                x = event.getX();
-                y = event.getY();
-                actionTouch = 1;
+                //x = event.getX();
+                //y = event.getY();
+                //actionTouch = 1;
                 break;
             case MotionEvent.ACTION_MOVE:
                 timeTouch++;
@@ -107,27 +238,24 @@ public class Dinh extends View {
                     x = event.getX();
                     y = event.getY();
                     actionTouch = 2;
+                    invalidate();
                 }
-                invalidate();
                 break;
             case MotionEvent.ACTION_UP:
                 if (timeTouch < 5) {
                     //Click
                     x = event.getX();
                     y = event.getY();
-                    listX.add(x);
-                    listY.add(y);
-                    //actionTouch = 1;
+                    actionTouch = 1;
+                    invalidate();
                 } else {
                     //Move
                     x = event.getX();
                     y = event.getY();
-                    listX.add(x);
-                    listY.add(y);
-                    actionTouch = 2;
+                    actionTouch = 3;
+                    invalidate();
                 }
                 timeTouch = 0;
-                invalidate();
                 break;
         }
         return true;
