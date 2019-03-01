@@ -12,14 +12,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class Dinh extends View {
     private Paint paint = new Paint();
 
-
-    private int ve = 0; //0: không làm gì, 1: vẽ đỉnh, 2: vẽ cung, 3: kéo thả đỉnh
     private float x;
     private float y;
 
@@ -30,6 +29,14 @@ public class Dinh extends View {
     ArrayList<Float> listStartY = new ArrayList<>();
     ArrayList<Float> listStopX = new ArrayList<>();
     ArrayList<Float> listStopY = new ArrayList<>();
+
+    //0: Không làm gì
+    //1: Vẽ đỉnh khi click
+    //2: Di chuyển đỉnh
+    //4:
+
+    private static int actionTouch = 0;
+    private static int timeTouch = 0;
 
 
     public Dinh(Context context) {
@@ -43,21 +50,43 @@ public class Dinh extends View {
         int widthCanvas = canvas.getWidth();
         int heightCanvas = canvas.getHeight();
 
-        paint.setColor(Color.YELLOW);
+        /*paint.setColor(Color.YELLOW);
         canvas.drawCircle(100, 100, 10, paint);
 
         paint.setColor(Color.BLUE);
-        canvas.drawLine(200, 200, 400, 400, paint);
-
-        canvas.drawCircle(x, y, 20, paint);
+        canvas.drawLine(200, 200, 400, 400, paint);*/
 
 
-        paint.setColor(Color.BLUE);
+        int touchVertex = -1;
+        if (actionTouch == 1) {
+            for (int i = 0; i < listX.size(); i++) {
+                if (Math.sqrt(Math.pow((listX.get(i) - x), 2) + Math.pow((listY.get(i) - y), 2)) <= 20) {
+                    paint.setColor(Color.BLUE);
+                    canvas.drawText(i + "", x + 100, y, paint);
+
+                    touchVertex = i;
+                    break;
+                }
+            }
+        }
+
+        if (actionTouch == 2) {
+            paint.setColor(Color.RED);
+            canvas.drawCircle(x, y, 20, paint);
+            actionTouch = 0;
+        }
+
         for (int i = 0; i < listX.size(); i++) {
-            canvas.drawCircle((float)listX.get(i), listY.get(i), 20, paint);
+            paint.setColor(Color.BLUE);
+            canvas.drawCircle(listX.get(i), listY.get(i), 20, paint);
+            paint.setColor(Color.WHITE);
+            paint.setTextAlign(Paint.Align.CENTER);
+            paint.setTextSize(20f);
+            canvas.drawText(i + "", x, y + 10, paint);
         }
 
         for (int i = 0; i < listStartX.size(); i++) {
+            paint.setColor(Color.BLUE);
             canvas.drawLine(listStartX.get(i), listStartY.get(i), listStopX.get(i), listStopY.get(i), paint);
         }
     }
@@ -68,18 +97,35 @@ public class Dinh extends View {
             case MotionEvent.ACTION_DOWN:
                 x = event.getX();
                 y = event.getY();
-                listX.add(x);
-                listY.add(y);
-                invalidate();
+                actionTouch = 1;
                 break;
             case MotionEvent.ACTION_MOVE:
-                x = event.getX();
-                y = event.getY();
+                timeTouch++;
+                if (timeTouch > 5) {
+                    x = event.getX();
+                    y = event.getY();
+                    actionTouch = 2;
+                }
                 invalidate();
                 break;
             case MotionEvent.ACTION_UP:
-                x = event.getX();
-                y = event.getY();
+                if (timeTouch < 5) {
+                    //Click
+                    x = event.getX();
+                    y = event.getY();
+                    listX.add(x);
+                    listY.add(y);
+                    //actionTouch = 1;
+                } else {
+                    //Move
+                    x = event.getX();
+                    y = event.getY();
+                    listX.add(x);
+                    listY.add(y);
+                    actionTouch = 2;
+                }
+                timeTouch = 0;
+                invalidate();
                 break;
         }
         return true;
