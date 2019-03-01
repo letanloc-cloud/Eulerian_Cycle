@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class Dinh extends View {
+public class DrawGraph extends View {
     private Paint paint = new Paint();
 
     private float x;
@@ -37,9 +37,12 @@ public class Dinh extends View {
 
     private static int actionTouch = 0;
     private static int timeTouch = 0;
+    private static boolean chooseVertex = false;
 
 
-    public Dinh(Context context) {
+
+
+    public DrawGraph(Context context) {
         super(context);
     }
 
@@ -67,6 +70,8 @@ public class Dinh extends View {
             for (int i = 0; i < listX.size(); i++) {
                 if (Math.sqrt(Math.pow((listX.get(i) - x), 2) + Math.pow((listY.get(i) - y), 2)) <= 20) {
                     paint.setColor(Color.BLUE);
+
+                    //((paint.descent() + paint.ascent()) / 2) is the distance from the baseline to the center.
                     canvas.drawText(i + "", x + 100, y, paint);
                     touchVertex = i;
                     break;
@@ -85,7 +90,7 @@ public class Dinh extends View {
                 paint.setColor(Color.WHITE);
                 paint.setTextAlign(Paint.Align.CENTER);
                 paint.setTextSize(20f);
-                canvas.drawText(i + "", listX.get(i), listY.get(i) + 10, paint);
+                canvas.drawText(i + "", listX.get(i), listY.get(i) - ((paint.descent() + paint.ascent()) / 2), paint);
             }
 
             if (touchVertex != -1) {
@@ -103,7 +108,7 @@ public class Dinh extends View {
                     paint.setColor(Color.WHITE);
                     paint.setTextAlign(Paint.Align.CENTER);
                     paint.setTextSize(20f);
-                    canvas.drawText(i + "", listX.get(i), listY.get(i) + 10, paint);
+                    canvas.drawText(i + "", listX.get(i), listY.get(i) - ((paint.descent() + paint.ascent()) / 2), paint);
                 }
             } else {
                 //Nếu chưa có đỉnh => add vào
@@ -129,7 +134,7 @@ public class Dinh extends View {
                         paint.setColor(Color.WHITE);
                         paint.setTextAlign(Paint.Align.CENTER);
                         paint.setTextSize(20f);
-                        canvas.drawText(i + "", listX.get(i), listY.get(i) + 10, paint);
+                        canvas.drawText(i + "", listX.get(i), listY.get(i) - ((paint.descent() + paint.ascent()) / 2), paint);
                     }
                 }
             }
@@ -146,7 +151,7 @@ public class Dinh extends View {
                 paint.setColor(Color.WHITE);
                 paint.setTextAlign(Paint.Align.CENTER);
                 paint.setTextSize(20f);
-                canvas.drawText(i + "", listX.get(i), listY.get(i) + 10, paint);
+                canvas.drawText(i + "", listX.get(i), listY.get(i) - ((paint.descent() + paint.ascent()) / 2), paint);
             }
 
             boolean touchArea = false;
@@ -166,7 +171,7 @@ public class Dinh extends View {
                 paint.setColor(Color.WHITE);
                 paint.setTextAlign(Paint.Align.CENTER);
                 paint.setTextSize(20f);
-                canvas.drawText("", x, y + 10, paint);
+                canvas.drawText("", x, y - ((paint.descent() + paint.ascent()) / 2), paint);
                 actionTouch = 0;
             }
         }
@@ -181,7 +186,7 @@ public class Dinh extends View {
                 paint.setColor(Color.WHITE);
                 paint.setTextAlign(Paint.Align.CENTER);
                 paint.setTextSize(20f);
-                canvas.drawText(i + "", listX.get(i), listY.get(i) + 10, paint);
+                canvas.drawText(i + "", listX.get(i), listY.get(i) - ((paint.descent() + paint.ascent()) / 2), paint);
             }
 
             //Nếu quá gần thì không add
@@ -203,7 +208,7 @@ public class Dinh extends View {
                     paint.setColor(Color.WHITE);
                     paint.setTextAlign(Paint.Align.CENTER);
                     paint.setTextSize(20f);
-                    canvas.drawText(i + "", listX.get(i), listY.get(i) + 10, paint);
+                    canvas.drawText(i + "", listX.get(i), listY.get(i) - ((paint.descent() + paint.ascent()) / 2), paint);
                 }
             }
         }
@@ -215,7 +220,7 @@ public class Dinh extends View {
             paint.setColor(Color.WHITE);
             paint.setTextAlign(Paint.Align.CENTER);
             paint.setTextSize(20f);
-            canvas.drawText(i + "", listX.get(i), listY.get(i) + 10, paint);
+            canvas.drawText(i + "", listX.get(i), listY.get(i) - ((paint.descent() + paint.ascent()) / 2), paint);
         }
 
         for (int i = 0; i < listStartX.size(); i++) {
