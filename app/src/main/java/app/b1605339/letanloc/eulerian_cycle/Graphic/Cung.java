@@ -37,7 +37,7 @@ public class Cung extends View {
         int widthCanvas = canvas.getWidth();
         int heightCanvas = canvas.getHeight();
 
-        paint.setColor(Color.WHITE);
-
+        paint.setColor(Color.BLUE);
+        canvas.drawLine(200, 200, 400, 400, paint);
     }
 }

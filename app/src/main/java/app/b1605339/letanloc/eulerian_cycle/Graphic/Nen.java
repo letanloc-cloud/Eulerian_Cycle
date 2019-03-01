@@ -28,7 +28,8 @@ public class Nen extends View {
         paint.setColor(Color.BLUE);
         canvas.drawPaint(paint);
         paint.setColor(Color.RED);
-        canvas.drawCircle(100, 100, 100, paint); //tọa độ x, y, tâm, pain
+        canvas.drawCircle(100, 100, 100, paint); //tọa độ x, y, tâm, paint
+
     }
 
 

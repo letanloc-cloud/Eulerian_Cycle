@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 
+import app.b1605339.letanloc.eulerian_cycle.Graphic.Cung;
 import app.b1605339.letanloc.eulerian_cycle.Graphic.Dinh;
 import app.b1605339.letanloc.eulerian_cycle.Graphic.Nen;
 
@@ -23,9 +24,12 @@ public class MainActivity extends AppCompatActivity {
 
         Nen nen = new Nen(this);
         LinearLayout llEC = findViewById(R.id.llEC);
-        llEC.addView(nen);
+        //llEC.addView(nen);
 
         Dinh dinh = new Dinh(this);
         llEC.addView(dinh);
+
+        //Cung cung = new Cung(this);
+        //llEC.addView(cung);
     }
 }
