@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Created by Lê Tấn Lộc on 15:10 18/01/2019
-  ~ Copyright (c) 2019 . All rights reserved.
-  ~ Last modified 01:42 18/01/2019
-  -->
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="app.b1605339.letanloc.eulerian_cycle">
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -16,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/FullScreen">
+        <activity android:name=".MainActivity"></activity>
         <activity android:name=".AppInformationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BeginActivity"></activity>
+        <activity android:name=".BeginActivity"/>
     </application>
 
 </manifest>

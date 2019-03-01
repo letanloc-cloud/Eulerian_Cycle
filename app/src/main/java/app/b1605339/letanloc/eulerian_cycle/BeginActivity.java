@@ -6,11 +6,16 @@
 
 package app.b1605339.letanloc.eulerian_cycle;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -26,6 +31,15 @@ public class BeginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_begin);
+
+        Button btnMainActivity = findViewById(R.id.btnMainActivity);
+        btnMainActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(BeginActivity.this, MainActivity.class);
+                startActivity(i);
+            }
+        });
 
         final EditText etSoDinh = (EditText) findViewById(R.id.etSoDinh);
         etSoDinh.addTextChangedListener(new TextWatcher() {
@@ -278,4 +292,5 @@ public class BeginActivity extends AppCompatActivity {
         });
 
     }
+
 }
