@@ -57,6 +57,7 @@ public class Dinh extends View {
         canvas.drawLine(200, 200, 400, 400, paint);*/
 
 
+        paint = new Paint();
         int touchVertex = -1;
         if (actionTouch == 1) {
             for (int i = 0; i < listX.size(); i++) {
@@ -77,12 +78,13 @@ public class Dinh extends View {
         }
 
         for (int i = 0; i < listX.size(); i++) {
+            paint = new Paint();
             paint.setColor(Color.BLUE);
             canvas.drawCircle(listX.get(i), listY.get(i), 20, paint);
             paint.setColor(Color.WHITE);
             paint.setTextAlign(Paint.Align.CENTER);
             paint.setTextSize(20f);
-            canvas.drawText(i + "", x, y + 10, paint);
+            canvas.drawText(i + "", listX.get(i), listY.get(i)+ 10, paint);
         }
 
         for (int i = 0; i < listStartX.size(); i++) {
