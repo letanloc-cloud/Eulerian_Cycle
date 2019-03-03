@@ -15,6 +15,8 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import app.b1605339.letanloc.eulerian_cycle.Graph;
+
 public class DrawGraph extends View {
     private Paint paint = new Paint();
 
@@ -109,8 +111,11 @@ public class DrawGraph extends View {
                                         edgeEnd.add(edgeEnd.size(), maxVertex); //Kết thúc bắt đầu cung
                                         chooseVertex = -1; //after add edge, remove choose vertex
                                         break;
-                                    } else if ((edgeStart.get(edgeStarVertex) == minVertex) && (edgeStart.get(edgeStarVertex) == maxVertex)) {
-                                        //If edge exist => don't add
+                                    } else if ((edgeStart.get(edgeStarVertex) == minVertex) && (edgeEnd.get(edgeStarVertex) == maxVertex)) {
+                                        //If edge exist => remove this edge
+                                        edgeStart.remove(edgeStarVertex);
+                                        edgeEnd.remove(edgeStarVertex);
+                                        chooseVertex = -1; //after remove edge, remove choose vertex
                                         break;
                                     }
                                 }
@@ -161,6 +166,13 @@ public class DrawGraph extends View {
             }
         }
 
+        /*paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setColor(Color.RED);
+        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setTextSize(20f);
+        canvas.drawText(edgeStart.size() + " " + edgeEnd.size(), 100, 100, paint);*/
+
         //Draw areaVertex
         if (areaVertex > -1) {
             paint = new Paint();
@@ -174,6 +186,10 @@ public class DrawGraph extends View {
         for (int i = 0; i < edgeStart.size(); i++) {
             paint = new Paint();
             paint.setAntiAlias(true);
+            paint.setColor(Color.RED);
+            paint.setTextAlign(Paint.Align.CENTER);
+            paint.setTextSize(20f);
+            canvas.drawText(edgeStart.get(i) + " - " + edgeEnd.get(i), (listX.get(edgeStart.get(i)) + listX.get(edgeEnd.get(i))) / 2, (listY.get(edgeStart.get(i)) + listY.get(edgeEnd.get(i))) / 2 - ((paint.descent() + paint.ascent()) / 2), paint);
             paint.setColor(Color.BLUE);
             canvas.drawLine(listX.get(edgeStart.get(i)), listY.get(edgeStart.get(i)), listX.get(edgeEnd.get(i)), listY.get(edgeEnd.get(i)), paint);
         }
@@ -194,6 +210,21 @@ public class DrawGraph extends View {
             paint.setTextSize(20f);
             canvas.drawText(i + "", listX.get(i), listY.get(i) - ((paint.descent() + paint.ascent()) / 2), paint);
         }
+
+        //After draw graph => find eulerian cycle
+        Graph graph = new Graph(listX.size());
+        for (int i = 0; i < edgeStart.size(); i++) {
+            graph.addEdge(edgeStart.get(i), edgeEnd.get(i));
+        }
+
+        paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setColor(Color.RED);
+        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setTextSize(20f);
+        canvas.drawText(graph.getEulerianCycle(), widthCanvas/2, 100, paint);
+        canvas.drawText("Số thành phần liên thông: " + graph.countConnectedComponents(), widthCanvas/2, 200, paint);
+
 
         //Old code
         /*int touchVertex = -1;
