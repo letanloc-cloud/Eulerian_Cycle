@@ -56,88 +56,96 @@ public class DrawGraph extends View {
         paint.setColor(Color.WHITE);
         canvas.drawPaint(paint);
 
-        //two vertices are near => don't add
-        for (int touchArea = 0; touchArea <= listX.size(); touchArea++) {
-            if (touchArea == listX.size()) {
-                //remove touch around area
-                areaVertex = -1;
-                break;
-            } else if (Math.sqrt(Math.pow((listX.get(touchArea) - x), 2) + Math.pow((listY.get(touchArea) - y), 2)) <= 80) {
-                areaVertex = touchArea;
-                break;
-            }
-        }
-
-
-        //Need fix when vertex out canvas
-        //Action click
-        if (actionTouch == 0) {
-            //Click vertex
-            int touchVertex; //Declare here to detect if no click vertex
-            for (touchVertex = 0; touchVertex < listX.size(); touchVertex++) {
-                if (Math.sqrt(Math.pow((listX.get(touchVertex) - x), 2) + Math.pow((listY.get(touchVertex) - y), 2)) <= 20) {
-                    //need fix => delete
-                    paint = new Paint();
-                    paint.setAntiAlias(true);
-                    paint.setColor(Color.BLUE);
-                    //((paint.descent() + paint.ascent()) / 2) is the distance from the baseline to the center.
-                    canvas.drawText(touchVertex + "", x + 100, y, paint);
-                    //delete
-
-
-                    if (chooseVertex == -1) {
-                        //Nếu chưa chọn đỉnh nào
-                        //Đỉnh chọn là đỉnh chạm vào
-                        chooseVertex = touchVertex;
-                        //Nếu chọn đỉnh => đổi màu
-                    } else {
-                        //Nếu chọn đỉnh khác đỉnh đã chọn => thêm cung
-                        if (chooseVertex != touchVertex) {
-                            edgeStart.add(edgeStart.size(), chooseVertex); //Thêm vị trí bắt đầu cung
-                            edgeEnd.add(edgeEnd.size(), touchVertex); //Kết thúc bắt đầu cung
-                            chooseVertex = -1; //after add edge, remove choose vertex
+        if ((x < (widthCanvas - 20)) && (y < heightCanvas - 20) && (x > 20) && (y > 20)) {
+            //two vertices are near => don't add
+            if((actionTouch > -1) || (actionTouch == 1)){
+                for (int touchArea = 0; touchArea <= listX.size(); touchArea++) {
+                    if (touchArea == listX.size()) {
+                        //remove touch around area
+                        areaVertex = -1;
+                        break;
+                    } else if (Math.sqrt(Math.pow((listX.get(touchArea) - x), 2) + Math.pow((listY.get(touchArea) - y), 2)) <= 80) {
+                        if ((actionTouch == 1) && (chooseVertex == touchArea)) {
+                            continue;
                         } else {
-                            //Đỉnh mới là đỉnh cũ => hủy trạng thái chọn
-                            chooseVertex = -1;
+                            areaVertex = touchArea;
+                            break;
                         }
                     }
-                    break;
                 }
             }
 
-            //click space => add vertex
-            if (touchVertex == listX.size()) {
-                //remove choose vertex
-                chooseVertex = -1;
+            //Need fix when vertex out canvas
+            //Action click
+            if (actionTouch == 0) {
+                //Click vertex
+                int touchVertex; //Declare here to detect if no click vertex
+                for (touchVertex = 0; touchVertex < listX.size(); touchVertex++) {
+                    if (Math.sqrt(Math.pow((listX.get(touchVertex) - x), 2) + Math.pow((listY.get(touchVertex) - y), 2)) <= 20) {
+                        //Need fix => delete
+                        paint = new Paint();
+                        paint.setAntiAlias(true);
+                        paint.setColor(Color.BLUE);
+                        //Code ((paint.descent() + paint.ascent()) / 2) is the distance from the baseline to the center.
+                        canvas.drawText(touchVertex + "", x + 100, y, paint);
+                        //Delete
 
-                //two vertices are far => add vertex
-                if (areaVertex == -1) {
-                    //add vertex
-                    //need fix => use graph
-                    //need fix => remove if it is edge
-                    listX.add(x);
-                    listY.add(y);
+
+                        if (chooseVertex == -1) {
+                            //Nếu chưa chọn đỉnh nào
+                            //Đỉnh chọn là đỉnh chạm vào
+                            chooseVertex = touchVertex;
+                            //Nếu chọn đỉnh => đổi màu
+                        } else {
+                            //Nếu chọn đỉnh khác đỉnh đã chọn => thêm cung
+                            if (chooseVertex != touchVertex) {
+                                edgeStart.add(edgeStart.size(), chooseVertex); //Thêm vị trí bắt đầu cung
+                                edgeEnd.add(edgeEnd.size(), touchVertex); //Kết thúc bắt đầu cung
+                                chooseVertex = -1; //after add edge, remove choose vertex
+                            } else {
+                                //Đỉnh mới là đỉnh cũ => hủy trạng thái chọn
+                                chooseVertex = -1;
+                            }
+                        }
+                        break;
+                    }
+                }
+
+                //click space => add vertex
+                if (touchVertex == listX.size()) {
+                    //remove choose vertex
+                    chooseVertex = -1;
+
+                    //two vertices are far => add vertex
+                    if (areaVertex == -1) {
+                        //add vertex
+                        //need fix => use graph
+                        //need fix => remove if it is edge
+                        listX.add(x);
+                        listY.add(y);
+                    }
                 }
             }
-        }
 
-        //Action move
-        if (actionTouch == 1) {
-            //Choose vertex => move this vertex
-            if (chooseVertex > -1) {
-                //Set new position
-                listX.set(chooseVertex, x);
-                listY.set(chooseVertex, y);
-
-                //draw choose vertex
-                if(areaVertex>-1){
-                    areaVertex = chooseVertex;
+            //Action move
+            if (actionTouch == 1) {
+                //Choose vertex and move (drag and drop) => move this vertex
+                if (chooseVertex > -1) {
+                    if ((areaVertex == chooseVertex) || (areaVertex == -1)) {
+                        //Set new position if vertex isn't touch other
+                        listX.set(chooseVertex, x);
+                        listY.set(chooseVertex, y);
+                    }
+                    if (areaVertex > -1) {
+                        //Draw area vertex around choose vertex
+                        areaVertex = chooseVertex;
+                    }
+                    //Need fix: move into area vertex
+                    //Action move: remove choose vertex
                 }
-                //Need fix: move into area vertex
-                //Action move: remove choose vertex
-            }
-            //Need fix: no choice vertex => add vertex and move it
+                //Need fix: no choice vertex => add vertex and move it
 
+            }
         }
 
         //Draw areaVertex
@@ -146,7 +154,7 @@ public class DrawGraph extends View {
             paint.setAntiAlias(true);
             paint.setColor(Color.YELLOW);
             paint.setStyle(Paint.Style.STROKE);
-            canvas.drawCircle(listX.get(areaVertex), listY.get(areaVertex), 60, paint);
+            canvas.drawCircle(listX.get(areaVertex), listY.get(areaVertex), 80, paint);
         }
         //Draw graph
         //Draw edge (edge must be draw before vertex)
@@ -450,8 +458,8 @@ public class DrawGraph extends View {
                 if (actionTouch == 1) {
                     chooseVertex = -1;
                 }
-                actionTouch = -1;
                 areaVertex = -1;
+                actionTouch = -1;
                 timeTouch = 0;
                 invalidate();
                 break;
