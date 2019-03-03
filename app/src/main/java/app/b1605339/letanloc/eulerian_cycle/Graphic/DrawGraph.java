@@ -23,17 +23,17 @@ public class DrawGraph extends View {
     private ArrayList<Float> listX = new ArrayList<>();
     private ArrayList<Float> listY = new ArrayList<>();
 
-    private int chooseVertex;
+    //-1: no choice
+    private int chooseVertex = -1;
     private ArrayList<Integer> edgeStart = new ArrayList<>();
     private ArrayList<Integer> edgeEnd = new ArrayList<>();
-    private static boolean isChooseVertex = false;
+    private static boolean isChooseVertex = false; //delete
 
-    //0: Không làm gì
-    //1: Vẽ đỉnh khi click
-    //2: Di chuyển đỉnh
-    //4:
-
-    private static int actionTouch = 0;
+    //-1: no action
+    //0: action click
+    //1: action move
+    //2: action up
+    private static int actionTouch = -1;
     private static int timeTouch = 0;
 
 
@@ -51,6 +51,50 @@ public class DrawGraph extends View {
         //Draw background
         paint.setColor(Color.WHITE);
         canvas.drawPaint(paint);
+
+        if (actionTouch == 0) {
+            int touchVertex;
+            for (touchVertex = 0; touchVertex < listX.size(); touchVertex++) {
+                if (Math.sqrt(Math.pow((listX.get(touchVertex) - x), 2) + Math.pow((listY.get(touchVertex) - y), 2)) <= 20) {
+                    //delete
+                    paint = new Paint();
+                    paint.setAntiAlias(true);
+                    paint.setColor(Color.BLUE);
+                    //((paint.descent() + paint.ascent()) / 2) is the distance from the baseline to the center.
+                    canvas.drawText(touchVertex + "", x + 100, y, paint);
+                    //delete
+
+
+                    if (chooseVertex == -1) {
+                        //Nếu chưa chọn đỉnh nào
+                        chooseVertex = touchVertex; //Đỉnh chọn là đỉnh chạm vào
+                        //Nếu chọn đỉnh => đổi màu
+                        //Vẽ các cung
+                        //Dùng graph fix lại
+                        //Đổi màu tại đỉnh click vào
+                    } else {
+                        //Nếu đã chọn 1 đỉnh
+                        //Nên dùng graph để fix lại
+                        //Nếu chọn đỉnh khác đỉnh đã chọn => thêm cung
+                        if (chooseVertex != touchVertex) {
+                            edgeStart.add(edgeStart.size(), chooseVertex); //Thêm vị trí bắt đầu cung
+                            edgeEnd.add(edgeEnd.size(), touchVertex); //Kết thúc bắt đầu cung
+                            isChooseVertex = false; //Chưa chọn đỉnh nào
+                        } else {
+                            //Đỉnh mới là đỉnh cũ => hủy trạng thái chọn
+                            chooseVertex = -1;
+                        }
+                        //Vẽ các cung
+                        //Dùng graph fix lại
+                        //Vẽ các đỉnh
+
+                    }
+                    break;
+                }
+            }
+
+
+        }
 
         //Draw graph
         //Draw edge (edge must be draw before vertex)
@@ -70,7 +114,7 @@ public class DrawGraph extends View {
             paint.setStyle(Paint.Style.STROKE);
             canvas.drawCircle(listX.get(i), listY.get(i), 20, paint);
             paint.setColor(Color.BLUE);
-            if(isChooseVertex && (chooseVertex==i)){
+            if (chooseVertex == i) {
                 paint.setColor(Color.GREEN);
             }
             paint.setTextAlign(Paint.Align.CENTER);
@@ -79,7 +123,7 @@ public class DrawGraph extends View {
         }
 
         //Old code
-        int touchVertex = -1;
+        /*int touchVertex = -1;
         if (actionTouch == 1) {
             for (int i = 0; i < listX.size(); i++) {
                 if (Math.sqrt(Math.pow((listX.get(i) - x), 2) + Math.pow((listY.get(i) - y), 2)) <= 20) {
@@ -156,7 +200,7 @@ public class DrawGraph extends View {
                         edgeStart.add(edgeStart.size(), chooseVertex); //Thêm vị trí bắt đầu cung
                         edgeEnd.add(edgeEnd.size(), touchVertex); //Kết thúc bắt đầu cung
                         isChooseVertex = false; //Chưa chọn đỉnh nào
-                    }else{
+                    } else {
                         //Đỉnh mới là đỉnh cũ => hủy trạng thái chọn
                         isChooseVertex = false;
                     }
@@ -325,12 +369,13 @@ public class DrawGraph extends View {
                     canvas.drawText(i + "", listX.get(i), listY.get(i) - ((paint.descent() + paint.ascent()) / 2), paint);
                 }
             }
-        }
-        
+        }*/
+
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 //x = event.getX();
