@@ -18,6 +18,8 @@ public class Graph {
 
     private String eulerianCycle = new String("");
 
+    private ArrayList<Integer> listVertexEulerianCycle = new ArrayList<>();
+
     /*add edge into graph
     ArrayList<Boolean> edge = new ArrayList<Boolean>();
     edge.add(x);
@@ -103,6 +105,11 @@ public class Graph {
         return eulerianCycle;
     }
 
+    public ArrayList<Integer> getListVertexEulerianCycle() {
+        listVertexEulerianCycle = new ArrayList<>();
+        this.chooseVertexStart();
+        return listVertexEulerianCycle;
+    }
 
     //depthFirstSearchRecursion
     private void visit(int u, ArrayList<Boolean> verticesVisitList) {
@@ -244,12 +251,14 @@ public class Graph {
                     this.printEulerian(i);
                     this.coppyGraph(tempGraph);
                     eulerianCycle = "Đồ thị chỉ có đường đi Euler\nĐồ thị không có chu trình Euler";
+                    listVertexEulerianCycle = new ArrayList<>();
                     return;
                 }
             }
         } else {
             System.out.println(res);
             eulerianCycle = "Đồ thị không có chu trình Euler";
+            listVertexEulerianCycle = new ArrayList<>();
             return;
         }
 
@@ -261,6 +270,7 @@ public class Graph {
                 if (isNotBridge(u, i)) {
                     System.out.println(u + "-" + i + " ");
                     eulerianCycle = eulerianCycle + u + "-" + i + " ";
+                    listVertexEulerianCycle.add(u);
                     printEulerian(i);
                 }
             }

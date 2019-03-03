@@ -20,17 +20,18 @@ import app.b1605339.letanloc.eulerian_cycle.Graph;
 public class DrawGraph extends View {
     private Paint paint = new Paint();
 
+    //Position touch
     private float x;
     private float y;
+    //Vertex
     private ArrayList<Float> listX = new ArrayList<>();
     private ArrayList<Float> listY = new ArrayList<>();
 
     //-1: no choice
     private int chooseVertex = -1;
-    //edge
+    //Edge
     private ArrayList<Integer> edgeStart = new ArrayList<>();
     private ArrayList<Integer> edgeEnd = new ArrayList<>();
-    //private static boolean isChooseVertex = false; //delete
 
     //Touch area around vertex
     private int areaVertex = -1;
@@ -42,12 +43,17 @@ public class DrawGraph extends View {
     private static int actionTouch = -1;
     private static int timeTouch = 0;
 
+    //High light edge
+
+    private static ArrayList<Integer> listVertex = new ArrayList<>();
+
 
     public DrawGraph(Context context) {
         super(context);
     }
 
 
+    //Multithread need synchronized
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -78,6 +84,8 @@ public class DrawGraph extends View {
             }
 
             //Need fix when vertex out canvas
+            //Need fix: remove vertex
+            //Need fix: save file
             //Action click
             if (actionTouch == 0) {
                 //Click vertex
@@ -107,8 +115,8 @@ public class DrawGraph extends View {
                                 for (edgeStarVertex = 0; edgeStarVertex <= edgeStart.size(); edgeStarVertex++) {
                                     //If no same edge => add edge
                                     if (edgeStarVertex == edgeStart.size()) {
-                                        edgeStart.add(edgeStart.size(), minVertex); //Thêm vị trí bắt đầu cung
-                                        edgeEnd.add(edgeEnd.size(), maxVertex); //Kết thúc bắt đầu cung
+                                        edgeStart.add(minVertex); //Thêm vị trí bắt đầu cung
+                                        edgeEnd.add(maxVertex); //Kết thúc bắt đầu cung
                                         chooseVertex = -1; //after add edge, remove choose vertex
                                         break;
                                     } else if ((edgeStart.get(edgeStarVertex) == minVertex) && (edgeEnd.get(edgeStarVertex) == maxVertex)) {
@@ -186,10 +194,10 @@ public class DrawGraph extends View {
         for (int i = 0; i < edgeStart.size(); i++) {
             paint = new Paint();
             paint.setAntiAlias(true);
-            paint.setColor(Color.RED);
+            //paint.setColor(Color.RED);
             paint.setTextAlign(Paint.Align.CENTER);
             paint.setTextSize(20f);
-            canvas.drawText(edgeStart.get(i) + " - " + edgeEnd.get(i), (listX.get(edgeStart.get(i)) + listX.get(edgeEnd.get(i))) / 2, (listY.get(edgeStart.get(i)) + listY.get(edgeEnd.get(i))) / 2 - ((paint.descent() + paint.ascent()) / 2), paint);
+            //canvas.drawText(edgeStart.get(i) + " - " + edgeEnd.get(i), (listX.get(edgeStart.get(i)) + listX.get(edgeEnd.get(i))) / 2, (listY.get(edgeStart.get(i)) + listY.get(edgeEnd.get(i))) / 2 - ((paint.descent() + paint.ascent()) / 2), paint);
             paint.setColor(Color.BLUE);
             canvas.drawLine(listX.get(edgeStart.get(i)), listY.get(edgeStart.get(i)), listX.get(edgeEnd.get(i)), listY.get(edgeEnd.get(i)), paint);
         }
@@ -222,8 +230,29 @@ public class DrawGraph extends View {
         paint.setColor(Color.RED);
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTextSize(20f);
-        canvas.drawText(graph.getEulerianCycle(), widthCanvas/2, 100, paint);
-        canvas.drawText("Số thành phần liên thông: " + graph.countConnectedComponents(), widthCanvas/2, 200, paint);
+        canvas.drawText(graph.getEulerianCycle(), widthCanvas / 2, 100, paint);
+        canvas.drawText("Số thành phần liên thông: " + graph.countConnectedComponents(), widthCanvas / 2, 200, paint);
+        listVertex = new ArrayList<>(graph.getListVertexEulerianCycle());
+
+        if (!listVertex.isEmpty()) {
+            for (int i = 0; i < listVertex.size(); i++) {
+                int edge2 = i + 1;
+                if (i + 1 == listVertex.size()) {
+                    edge2 = 0;
+                }
+                paint = new Paint();
+                paint.setAntiAlias(true);
+                paint.setColor(Color.GREEN);
+                canvas.drawCircle((listX.get(listVertex.get(i)) + listX.get(listVertex.get(edge2))) / 2, (listY.get(listVertex.get(i)) + listY.get(listVertex.get(edge2))) / 2, 10, paint);
+                paint.setColor(Color.BLUE);
+                paint.setTextAlign(Paint.Align.CENTER);
+                paint.setTextSize(20f);
+
+                canvas.drawText((i + 1) + "", (listX.get(listVertex.get(i)) + listX.get(listVertex.get(edge2))) / 2, (listY.get(listVertex.get(i)) + listY.get(listVertex.get(edge2))) / 2 - ((paint.descent() + paint.ascent()) / 2), paint);
+
+            }
+
+        }
 
 
         //Old code
