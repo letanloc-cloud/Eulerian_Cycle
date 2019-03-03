@@ -29,6 +29,8 @@ public class DrawGraph extends View {
     private ArrayList<Integer> edgeEnd = new ArrayList<>();
     private static boolean isChooseVertex = false; //delete
 
+    private int touchAroundVertex = -1;
+
     //-1: no action
     //0: action click
     //1: action move
@@ -52,11 +54,14 @@ public class DrawGraph extends View {
         paint.setColor(Color.WHITE);
         canvas.drawPaint(paint);
 
+        //Click
         if (actionTouch == 0) {
-            int touchVertex;
+
+            //Click vertex
+            int touchVertex; //Declare here to detect if no click vertex
             for (touchVertex = 0; touchVertex < listX.size(); touchVertex++) {
                 if (Math.sqrt(Math.pow((listX.get(touchVertex) - x), 2) + Math.pow((listY.get(touchVertex) - y), 2)) <= 20) {
-                    //delete
+                    //need fix => delete
                     paint = new Paint();
                     paint.setAntiAlias(true);
                     paint.setColor(Color.BLUE);
@@ -67,34 +72,58 @@ public class DrawGraph extends View {
 
                     if (chooseVertex == -1) {
                         //Nếu chưa chọn đỉnh nào
-                        chooseVertex = touchVertex; //Đỉnh chọn là đỉnh chạm vào
+                        //Đỉnh chọn là đỉnh chạm vào
+                        chooseVertex = touchVertex;
                         //Nếu chọn đỉnh => đổi màu
-                        //Vẽ các cung
-                        //Dùng graph fix lại
-                        //Đổi màu tại đỉnh click vào
                     } else {
-                        //Nếu đã chọn 1 đỉnh
-                        //Nên dùng graph để fix lại
                         //Nếu chọn đỉnh khác đỉnh đã chọn => thêm cung
                         if (chooseVertex != touchVertex) {
                             edgeStart.add(edgeStart.size(), chooseVertex); //Thêm vị trí bắt đầu cung
                             edgeEnd.add(edgeEnd.size(), touchVertex); //Kết thúc bắt đầu cung
-                            isChooseVertex = false; //Chưa chọn đỉnh nào
+                            chooseVertex = -1; //after add edge, remove choose vertex
                         } else {
                             //Đỉnh mới là đỉnh cũ => hủy trạng thái chọn
                             chooseVertex = -1;
                         }
-                        //Vẽ các cung
-                        //Dùng graph fix lại
-                        //Vẽ các đỉnh
-
                     }
                     break;
                 }
             }
 
+            //click space => add vertex
+            if (touchVertex == listX.size()) {
+                //remove choose vertex
+                chooseVertex = -1;
+                //two vertices are near => don't add
+                int touchArea; //declare here to detect if two vertices are far
+                for (touchArea = 0; touchArea < listX.size(); touchArea++) {
+                    if (Math.sqrt(Math.pow((listX.get(touchArea) - x), 2) + Math.pow((listY.get(touchArea) - y), 2)) <= 80) {
+                        paint = new Paint();
+                        paint.setAntiAlias(true);
+                        paint.setColor(Color.YELLOW);
+                        paint.setStyle(Paint.Style.STROKE);
+                        canvas.drawCircle(listX.get(touchArea), listY.get(touchArea), 80, paint);
 
+                        touchAroundVertex = touchArea;
+                        break;
+                    }
+                }
+
+                //two vertices are far => add
+                if (touchArea==listX.size()){
+                    //remove touch around area
+                    touchAroundVertex = -1;
+
+                    //add vertex
+                    //need fix => use graph
+                    //need fix => remove if it is edge
+                    listX.add(x);
+                    listY.add(y);
+                }
+            }
         }
+
+        //
 
         //Draw graph
         //Draw edge (edge must be draw before vertex)
@@ -378,16 +407,13 @@ public class DrawGraph extends View {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                //x = event.getX();
-                //y = event.getY();
-                //actionTouch = 1;
                 break;
             case MotionEvent.ACTION_MOVE:
                 timeTouch++;
                 if (timeTouch > 5) {
                     x = event.getX();
                     y = event.getY();
-                    actionTouch = 2;
+                    actionTouch = 1;
                     invalidate();
                 }
                 break;
@@ -396,13 +422,13 @@ public class DrawGraph extends View {
                     //Click
                     x = event.getX();
                     y = event.getY();
-                    actionTouch = 1;
+                    actionTouch = 0;
                     invalidate();
                 } else {
                     //Move
                     x = event.getX();
                     y = event.getY();
-                    actionTouch = 3;
+                    actionTouch = 2;
                     invalidate();
                 }
                 timeTouch = 0;
