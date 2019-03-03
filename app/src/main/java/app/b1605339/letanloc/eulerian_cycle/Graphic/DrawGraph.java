@@ -48,16 +48,37 @@ public class DrawGraph extends View {
         int widthCanvas = canvas.getWidth();
         int heightCanvas = canvas.getHeight();
 
-        /*paint.setColor(Color.YELLOW);
-        canvas.drawCircle(100, 100, 10, paint);
-
-        paint.setColor(Color.BLUE);
-        canvas.drawLine(200, 200, 400, 400, paint);*/
-
+        //Draw background
         paint.setColor(Color.WHITE);
         canvas.drawPaint(paint);
 
+        //Draw graph
+        //Draw edge (edge must be draw before vertex)
+        for (int i = 0; i < edgeStart.size(); i++) {
+            paint = new Paint();
+            paint.setAntiAlias(true);
+            paint.setColor(Color.BLUE);
+            canvas.drawLine(listX.get(edgeStart.get(i)), listY.get(edgeStart.get(i)), listX.get(edgeEnd.get(i)), listY.get(edgeEnd.get(i)), paint);
+        }
+        //Draw vertex
+        for (int i = 0; i < listX.size(); i++) {
+            paint = new Paint();
+            paint.setAntiAlias(true);
+            paint.setColor(Color.WHITE);
+            canvas.drawCircle(listX.get(i), listY.get(i), 20, paint);
+            paint.setColor(Color.BLUE);
+            paint.setStyle(Paint.Style.STROKE);
+            canvas.drawCircle(listX.get(i), listY.get(i), 20, paint);
+            paint.setColor(Color.BLUE);
+            if(isChooseVertex && (chooseVertex==i)){
+                paint.setColor(Color.GREEN);
+            }
+            paint.setTextAlign(Paint.Align.CENTER);
+            paint.setTextSize(20f);
+            canvas.drawText(i + "", listX.get(i), listY.get(i) - ((paint.descent() + paint.ascent()) / 2), paint);
+        }
 
+        //Old code
         int touchVertex = -1;
         if (actionTouch == 1) {
             for (int i = 0; i < listX.size(); i++) {
@@ -65,7 +86,6 @@ public class DrawGraph extends View {
                     paint = new Paint();
                     paint.setAntiAlias(true);
                     paint.setColor(Color.BLUE);
-
                     //((paint.descent() + paint.ascent()) / 2) is the distance from the baseline to the center.
                     canvas.drawText(i + "", x + 100, y, paint);
                     touchVertex = i;
@@ -77,16 +97,16 @@ public class DrawGraph extends View {
         //Khi người dùng click
         if (actionTouch == 1) {
             //Vẽ lại đồ thị
+            //Vẽ các cung
+            //Dùng graph fix lại
+            for (int i = 0; i < edgeStart.size(); i++) {
+                paint = new Paint();
+                paint.setAntiAlias(true);
+                paint.setColor(Color.BLUE);
+                canvas.drawLine(listX.get(edgeStart.get(i)), listY.get(edgeStart.get(i)), listX.get(edgeEnd.get(i)), listY.get(edgeEnd.get(i)), paint);
+            }
+            //Vẽ các đỉnh
             for (int i = 0; i < listX.size(); i++) {
-                //Vẽ các cung
-                //Dùng graph fix lại
-                for (int j = 0; j < edgeStart.size(); j++) {
-                    paint = new Paint();
-                    paint.setAntiAlias(true);
-                    paint.setColor(Color.BLUE);
-                    canvas.drawLine(listX.get(edgeStart.get(j)), listY.get(edgeStart.get(j)), listX.get(edgeEnd.get(j)), listY.get(edgeEnd.get(j)), paint);
-                }
-
                 paint = new Paint();
                 paint.setAntiAlias(true);
                 paint.setColor(Color.BLUE);
@@ -104,16 +124,16 @@ public class DrawGraph extends View {
                     chooseVertex = touchVertex; //Đỉnh chọn là đỉnh chạm vào
                     isChooseVertex = true; //Đã chọn đỉnh
                     //Nếu chọn đỉnh => đổi màu
+                    //Vẽ các cung
+                    //Dùng graph fix lại
+                    for (int i = 0; i < edgeStart.size(); i++) {
+                        paint = new Paint();
+                        paint.setAntiAlias(true);
+                        paint.setColor(Color.BLUE);
+                        canvas.drawLine(listX.get(edgeStart.get(i)), listY.get(edgeStart.get(i)), listX.get(edgeEnd.get(i)), listY.get(edgeEnd.get(i)), paint);
+                    }
+                    //Vẽ các đỉnh
                     for (int i = 0; i < listX.size(); i++) {
-                        //Vẽ các cung
-                        //Dùng graph fix lại
-                        for (int j = 0; j < edgeStart.size(); j++) {
-                            paint = new Paint();
-                            paint.setAntiAlias(true);
-                            paint.setColor(Color.BLUE);
-                            canvas.drawLine(listX.get(edgeStart.get(j)), listY.get(edgeStart.get(j)), listX.get(edgeEnd.get(j)), listY.get(edgeEnd.get(j)), paint);
-                        }
-
                         paint = new Paint();
                         paint.setAntiAlias(true);
                         paint.setColor(Color.BLUE);
@@ -140,15 +160,16 @@ public class DrawGraph extends View {
                         //Đỉnh mới là đỉnh cũ => hủy trạng thái chọn
                         isChooseVertex = false;
                     }
+                    //Vẽ các cung
+                    //Dùng graph fix lại
+                    for (int i = 0; i < edgeStart.size(); i++) {
+                        paint = new Paint();
+                        paint.setAntiAlias(true);
+                        paint.setColor(Color.BLUE);
+                        canvas.drawLine(listX.get(edgeStart.get(i)), listY.get(edgeStart.get(i)), listX.get(edgeEnd.get(i)), listY.get(edgeEnd.get(i)), paint);
+                    }
+                    //Vẽ các đỉnh
                     for (int i = 0; i < listX.size(); i++) {
-                        //Vẽ các cung
-                        //Dùng graph fix lại
-                        for (int j = 0; j < edgeStart.size(); j++) {
-                            paint = new Paint();
-                            paint.setAntiAlias(true);
-                            paint.setColor(Color.BLUE);
-                            canvas.drawLine(listX.get(edgeStart.get(j)), listY.get(edgeStart.get(j)), listX.get(edgeEnd.get(j)), listY.get(edgeEnd.get(j)), paint);
-                        }
 
                         paint = new Paint();
                         paint.setAntiAlias(true);
@@ -183,15 +204,16 @@ public class DrawGraph extends View {
                     listX.add(x);
                     listY.add(y);
                     //Vẽ lại đồ thị
+                    //Vẽ các cung
+                    //Dùng graph fix lại
+                    for (int i = 0; i < edgeStart.size(); i++) {
+                        paint = new Paint();
+                        paint.setAntiAlias(true);
+                        paint.setColor(Color.BLUE);
+                        canvas.drawLine(listX.get(edgeStart.get(i)), listY.get(edgeStart.get(i)), listX.get(edgeEnd.get(i)), listY.get(edgeEnd.get(i)), paint);
+                    }
+                    //Vẽ các đỉnh
                     for (int i = 0; i < listX.size(); i++) {
-                        //Vẽ các cung
-                        //Dùng graph fix lại
-                        for (int j = 0; j < edgeStart.size(); j++) {
-                            paint = new Paint();
-                            paint.setAntiAlias(true);
-                            paint.setColor(Color.BLUE);
-                            canvas.drawLine(listX.get(edgeStart.get(j)), listY.get(edgeStart.get(j)), listX.get(edgeEnd.get(j)), listY.get(edgeEnd.get(j)), paint);
-                        }
 
                         paint = new Paint();
                         paint.setAntiAlias(true);
@@ -209,15 +231,16 @@ public class DrawGraph extends View {
 
         if (actionTouch == 2) {
             //Vẽ lại đồ thị
+            //Vẽ các cung
+            //Dùng graph fix lại
+            for (int i = 0; i < edgeStart.size(); i++) {
+                paint = new Paint();
+                paint.setAntiAlias(true);
+                paint.setColor(Color.BLUE);
+                canvas.drawLine(listX.get(edgeStart.get(i)), listY.get(edgeStart.get(i)), listX.get(edgeEnd.get(i)), listY.get(edgeEnd.get(i)), paint);
+            }
+            //Vẽ các đỉnh
             for (int i = 0; i < listX.size(); i++) {
-                //Vẽ các cung
-                //Dùng graph fix lại
-                for (int j = 0; j < edgeStart.size(); j++) {
-                    paint = new Paint();
-                    paint.setAntiAlias(true);
-                    paint.setColor(Color.BLUE);
-                    canvas.drawLine(listX.get(edgeStart.get(j)), listY.get(edgeStart.get(j)), listX.get(edgeEnd.get(j)), listY.get(edgeEnd.get(j)), paint);
-                }
 
                 paint = new Paint();
                 paint.setAntiAlias(true);
@@ -259,15 +282,16 @@ public class DrawGraph extends View {
 
         if (actionTouch == 3) {
             //Vẽ lại đồ thị
+            //Vẽ các cung
+            //Dùng graph fix lại
+            for (int i = 0; i < edgeStart.size(); i++) {
+                paint = new Paint();
+                paint.setAntiAlias(true);
+                paint.setColor(Color.BLUE);
+                canvas.drawLine(listX.get(edgeStart.get(i)), listY.get(edgeStart.get(i)), listX.get(edgeEnd.get(i)), listY.get(edgeEnd.get(i)), paint);
+            }
+            //Vẽ các đỉnh
             for (int i = 0; i < listX.size(); i++) {
-                //Vẽ các cung
-                //Dùng graph fix lại
-                for (int j = 0; j < edgeStart.size(); j++) {
-                    paint = new Paint();
-                    paint.setAntiAlias(true);
-                    paint.setColor(Color.BLUE);
-                    canvas.drawLine(listX.get(edgeStart.get(j)), listY.get(edgeStart.get(j)), listX.get(edgeEnd.get(j)), listY.get(edgeEnd.get(j)), paint);
-                }
 
                 paint = new Paint();
                 paint.setAntiAlias(true);
@@ -302,19 +326,7 @@ public class DrawGraph extends View {
                 }
             }
         }
-
-        /*for (int i = 0; i < listX.size(); i++) {
-            paint = new Paint();
-            paint.setColor(Color.BLUE);
-            canvas.drawCircle(listX.get(i), listY.get(i), 20, paint);
-            paint.setColor(Color.WHITE);
-            paint.setTextAlign(Paint.Align.CENTER);
-            paint.setTextSize(20f);
-            canvas.drawText(i + "", listX.get(i), listY.get(i) - ((paint.descent() + paint.ascent()) / 2), paint);
-        }
-
-
-        }*/
+        
     }
 
     @Override
