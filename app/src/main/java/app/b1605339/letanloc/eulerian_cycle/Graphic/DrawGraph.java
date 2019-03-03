@@ -58,7 +58,7 @@ public class DrawGraph extends View {
 
         if ((x < (widthCanvas - 20)) && (y < heightCanvas - 20) && (x > 20) && (y > 20)) {
             //two vertices are near => don't add
-            if((actionTouch > -1) || (actionTouch == 1)){
+            if ((actionTouch > -1) || (actionTouch == 1)) {
                 for (int touchArea = 0; touchArea <= listX.size(); touchArea++) {
                     if (touchArea == listX.size()) {
                         //remove touch around area
@@ -99,9 +99,22 @@ public class DrawGraph extends View {
                         } else {
                             //Nếu chọn đỉnh khác đỉnh đã chọn => thêm cung
                             if (chooseVertex != touchVertex) {
-                                edgeStart.add(edgeStart.size(), chooseVertex); //Thêm vị trí bắt đầu cung
-                                edgeEnd.add(edgeEnd.size(), touchVertex); //Kết thúc bắt đầu cung
-                                chooseVertex = -1; //after add edge, remove choose vertex
+                                int minVertex = chooseVertex < touchVertex ? chooseVertex : touchVertex;
+                                int maxVertex = chooseVertex < touchVertex ? touchVertex : chooseVertex;
+                                int edgeStarVertex;
+                                for (edgeStarVertex = 0; edgeStarVertex <= edgeStart.size(); edgeStarVertex++) {
+                                    //If no same edge => add edge
+                                    if (edgeStarVertex == edgeStart.size()) {
+                                        edgeStart.add(edgeStart.size(), minVertex); //Thêm vị trí bắt đầu cung
+                                        edgeEnd.add(edgeEnd.size(), maxVertex); //Kết thúc bắt đầu cung
+                                        chooseVertex = -1; //after add edge, remove choose vertex
+                                        break;
+                                    } else if ((edgeStart.get(edgeStarVertex) == minVertex) && (edgeStart.get(edgeStarVertex) == maxVertex)) {
+                                        //If edge exist => don't add
+                                        break;
+                                    }
+                                }
+
                             } else {
                                 //Đỉnh mới là đỉnh cũ => hủy trạng thái chọn
                                 chooseVertex = -1;
