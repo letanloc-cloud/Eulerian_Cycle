@@ -277,6 +277,19 @@ public class Graph {
         }
     }
 
+    public Boolean saveFile(String fileName){
+        String fileContent = new String();
+        for (int i = 0; i < this.numberOfVertices; i++) {
+            for (int j = 0; j < this.numberOfVertices; j++) {
+                fileContent = fileContent + (this.graphMatrix.get(i).get(j) ? 1 : 0) + " ";
+            }
+            fileContent = fileContent + System.getProperty("line.separator");
+        }
+        FileOperations fop = new FileOperations();
+        Boolean write = fop.write(fileName, fileContent);
+        return write;
+    }
+
     private Boolean isNotBridge(Integer u, Integer i) {
         int countVertex = 0;
         for (int j = 0; j < this.numberOfVertices; j++) {

@@ -43,8 +43,7 @@ public class DrawGraph extends View {
     private static int actionTouch = -1;
     private static int timeTouch = 0;
 
-    //High light edge
-
+    //Draw result
     private static ArrayList<Integer> listVertex = new ArrayList<>();
 
 
@@ -52,6 +51,13 @@ public class DrawGraph extends View {
         super(context);
     }
 
+    public Boolean saveFile(String fileName){
+        Graph graph = new Graph(listX.size());
+        for (int i = 0; i < this.edgeStart.size(); i++) {
+            graph.addEdge(this.edgeStart.get(i), this.edgeEnd.get(i));
+        }
+        return graph.saveFile(fileName);
+    }
 
     //Multithread need synchronized
     @Override
@@ -230,8 +236,8 @@ public class DrawGraph extends View {
         paint.setColor(Color.RED);
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTextSize(20f);
-        canvas.drawText(graph.getEulerianCycle(), widthCanvas / 2, 100, paint);
-        canvas.drawText("Số thành phần liên thông: " + graph.countConnectedComponents(), widthCanvas / 2, 200, paint);
+        //canvas.drawText(graph.getEulerianCycle(), widthCanvas / 2, 100, paint);
+        canvas.drawText("Số thành phần liên thông: " + graph.countConnectedComponents(), widthCanvas / 2, 100, paint);
         listVertex = new ArrayList<>(graph.getListVertexEulerianCycle());
 
         if (!listVertex.isEmpty()) {

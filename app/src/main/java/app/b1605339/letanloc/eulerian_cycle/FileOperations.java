@@ -17,6 +17,7 @@ public class FileOperations {
     public Boolean write(String fileName, String fileContent){
         try{
             String filePath = "/sdcard/" + fileName + ".txt";
+            //storage/emulated/0/
             File file = new File(filePath);
 
             //if file doesn't exist, then create it

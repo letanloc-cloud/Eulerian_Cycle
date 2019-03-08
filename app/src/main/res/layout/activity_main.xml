@@ -12,9 +12,33 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical">
+
     <LinearLayout
         android:id="@+id/llEC"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal"></LinearLayout>
+
+    <EditText
+        android:id="@+id/etFileName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Nhập tên file"
+        android:inputType="textPersonName"
+        android:textSize="36sp" />
+
+    <Button
+        android:id="@+id/btnExportFile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:text="Lưu đồ thị"
+        android:textAllCaps="false"
+        android:textSize="36sp" />
 
 </LinearLayout>
