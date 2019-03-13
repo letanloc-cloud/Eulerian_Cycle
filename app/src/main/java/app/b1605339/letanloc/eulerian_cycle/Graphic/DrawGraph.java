@@ -191,7 +191,7 @@ public class DrawGraph extends View {
         if (areaVertex > -1) {
             paint = new Paint();
             paint.setAntiAlias(true);
-            paint.setColor(Color.YELLOW);
+            paint.setColor(Color.RED);
             paint.setStyle(Paint.Style.STROKE);
             canvas.drawCircle(listX.get(areaVertex), listY.get(areaVertex), 80, paint);
         }
@@ -214,11 +214,14 @@ public class DrawGraph extends View {
             paint.setColor(Color.WHITE);
             canvas.drawCircle(listX.get(i), listY.get(i), 20, paint);
             paint.setColor(Color.BLUE);
+            if (chooseVertex == i) {
+                paint.setColor(Color.RED);
+            }
             paint.setStyle(Paint.Style.STROKE);
             canvas.drawCircle(listX.get(i), listY.get(i), 20, paint);
             paint.setColor(Color.BLUE);
             if (chooseVertex == i) {
-                paint.setColor(Color.GREEN);
+                paint.setColor(Color.RED);
             }
             paint.setTextAlign(Paint.Align.CENTER);
             paint.setTextSize(20f);
@@ -248,7 +251,7 @@ public class DrawGraph extends View {
                 }
                 paint = new Paint();
                 paint.setAntiAlias(true);
-                paint.setColor(Color.GREEN);
+                paint.setColor(Color.RED);
                 canvas.drawCircle((listX.get(listVertex.get(i)) + listX.get(listVertex.get(edge2))) / 2, (listY.get(listVertex.get(i)) + listY.get(listVertex.get(edge2))) / 2, 10, paint);
                 paint.setColor(Color.BLUE);
                 paint.setTextAlign(Paint.Align.CENTER);
