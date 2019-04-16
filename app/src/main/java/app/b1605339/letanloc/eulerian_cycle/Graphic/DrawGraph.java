@@ -173,7 +173,7 @@ public class DrawGraph extends View {
                         paint.setTextAlign(Paint.Align.CENTER);
                         paint.setTextSize(20f);
                         if((x > (widthCanvas - 60)) && (y > (heightCanvas - 60))){
-                            canvas.drawText("xóa", widthCanvas - 100, heightCanvas - 100, paint);
+//                            canvas.drawText("xóa", widthCanvas - 100, heightCanvas - 100, paint);
 
                             int edgeStarVertex;
                             for (edgeStarVertex = 0; edgeStarVertex < edgeStart.size(); edgeStarVertex++) {
@@ -182,6 +182,16 @@ public class DrawGraph extends View {
                                     edgeStart.remove(edgeStarVertex);
                                     edgeEnd.remove(edgeStarVertex);
                                     edgeStarVertex--;
+                               }
+                            }
+                            for (edgeStarVertex = 0; edgeStarVertex < edgeStart.size(); edgeStarVertex++) {
+                                //Change vertex of all edge
+                                //If edge has (Vertex > chooseVertex) (will delete) => increment
+                                if (edgeStart.get(edgeStarVertex) > chooseVertex) {
+                                    edgeStart.set(edgeStarVertex, edgeStart.get(edgeStarVertex) - 1);
+                                }
+                                if (edgeEnd.get(edgeStarVertex) > chooseVertex) {
+                                    edgeEnd.set(edgeStarVertex, edgeEnd.get(edgeStarVertex) - 1);
                                 }
                             }
                             listX.remove(chooseVertex);
@@ -190,6 +200,7 @@ public class DrawGraph extends View {
                         }
                         canvas.drawLine(widthCanvas - 75, heightCanvas - 75, widthCanvas, heightCanvas - 75, paint);
                         canvas.drawLine(widthCanvas - 75, heightCanvas - 75, widthCanvas - 75, heightCanvas, paint);
+                        canvas.drawText("Xóa", widthCanvas - 37, heightCanvas - 37, paint);
                     }
                     if (areaVertex > -1) {
                         //Draw area vertex around choose vertex
@@ -202,6 +213,19 @@ public class DrawGraph extends View {
 
             }
         }
+
+        //The way to use this app
+        paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setTextSize(18f);
+        paint.setTextAlign(Paint.Align.LEFT);
+        paint.setColor(Color.BLACK);
+        canvas.drawText("Click vào khoảng trống để vẽ đỉnh", 20, heightCanvas - 120, paint);
+        canvas.drawText("Click vào đỉnh để chọn đỉnh", 20, heightCanvas - 100, paint);
+        canvas.drawText("Chọn lần lượt 2 đỉnh chưa có cung để vẽ cung 2 đỉnh đó", 20, heightCanvas - 80, paint);
+        canvas.drawText("Chọn lần lượt 2 đỉnh đã có cung để xóa cung 2 đỉnh đó", 20, heightCanvas - 60, paint);
+        canvas.drawText("Nắm giữ 1 đỉnh và kéo thả để di chuyển đỉnh đó", 20, heightCanvas - 40, paint);
+        canvas.drawText("Di chuyển 1 đỉnh vào khung đỏ ở góc phải phía dưới để xóa đỉnh đó", 20, heightCanvas - 20, paint);
 
         /*paint = new Paint();
         paint.setAntiAlias(true);
@@ -264,6 +288,7 @@ public class DrawGraph extends View {
         paint.setTextSize(20f);
         //canvas.drawText(graph.getEulerianCycle(), widthCanvas / 2, 100, paint);
         canvas.drawText("Số thành phần liên thông: " + graph.countConnectedComponents(), widthCanvas / 2, 100, paint);
+
         listVertex = new ArrayList<>(graph.getListVertexEulerianCycle());
 
         if (!listVertex.isEmpty()) {
