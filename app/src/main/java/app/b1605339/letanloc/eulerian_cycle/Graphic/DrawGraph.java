@@ -174,19 +174,17 @@ public class DrawGraph extends View {
                         paint.setTextSize(20f);
                         if((x > (widthCanvas - 60)) && (y > (heightCanvas - 60))){
                             canvas.drawText("xóa", widthCanvas - 100, heightCanvas - 100, paint);
-                            listX.remove(chooseVertex);
-                            listY.remove(chooseVertex);
 
                             int edgeStarVertex;
-                            for (edgeStarVertex = 0; edgeStarVertex <= edgeStart.size(); edgeStarVertex++) {
+                            for (edgeStarVertex = 0; edgeStarVertex < edgeStart.size(); edgeStarVertex++) {
                                 //If this edge has chooseVertex => remove
                                if ((edgeStart.get(edgeStarVertex) == chooseVertex) || (edgeEnd.get(edgeStarVertex) == chooseVertex)) {
                                     edgeStart.remove(edgeStarVertex);
                                     edgeEnd.remove(edgeStarVertex);
-
-                                    break;
                                 }
                             }
+                            listX.remove(chooseVertex);
+                            listY.remove(chooseVertex);
                             chooseVertex = -1; //after remove edge, remove choose vertex
                         }
                         canvas.drawLine(widthCanvas - 75, heightCanvas - 75, widthCanvas, heightCanvas - 75, paint);
