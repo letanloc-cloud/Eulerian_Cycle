@@ -181,6 +181,7 @@ public class DrawGraph extends View {
                                if ((edgeStart.get(edgeStarVertex) == chooseVertex) || (edgeEnd.get(edgeStarVertex) == chooseVertex)) {
                                     edgeStart.remove(edgeStarVertex);
                                     edgeEnd.remove(edgeStarVertex);
+                                    edgeStarVertex--;
                                 }
                             }
                             listX.remove(chooseVertex);
