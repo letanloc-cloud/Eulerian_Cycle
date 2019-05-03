@@ -45,13 +45,14 @@ public class DrawGraph extends View {
 
     //Draw result
     private static ArrayList<Integer> listVertex = new ArrayList<>();
+    private int edgeStarVertex;
 
 
     public DrawGraph(Context context) {
         super(context);
     }
 
-    public Boolean saveFile(String fileName){
+    public Boolean saveFile(String fileName) {
         Graph graph = new Graph(listX.size());
         for (int i = 0; i < this.edgeStart.size(); i++) {
             graph.addEdge(this.edgeStart.get(i), this.edgeEnd.get(i));
@@ -115,6 +116,7 @@ public class DrawGraph extends View {
                         } else {
                             //Nếu chọn đỉnh khác đỉnh đã chọn => thêm cung
                             if (chooseVertex != touchVertex) {
+
                                 int minVertex = chooseVertex < touchVertex ? chooseVertex : touchVertex;
                                 int maxVertex = chooseVertex < touchVertex ? touchVertex : chooseVertex;
                                 int edgeStarVertex;
@@ -150,11 +152,21 @@ public class DrawGraph extends View {
 
                     //two vertices are far => add vertex
                     if (areaVertex == -1) {
-                        //add vertex
-                        //need fix => use graph
-                        //need fix => remove if it is edge
-                        listX.add(x);
-                        listY.add(y);
+                        //If this vertex in delete area => can't add vertex
+                        if((x > (widthCanvas - 100)) && (y > (heightCanvas - 100))){
+                            paint = new Paint();
+                            paint.setAntiAlias(true);
+                            paint.setColor(Color.RED);
+                            paint.setTextAlign(Paint.Align.CENTER);
+                            paint.setTextSize(20f);
+                            canvas.drawText("Xóa đỉnh", widthCanvas - 50, heightCanvas - 50, paint);
+                        }else {
+                            //add vertex
+                            //need fix => use graph
+                            //need fix => remove if it is edge
+                            listX.add(x);
+                            listY.add(y);
+                        }
                     }
                 }
             }
@@ -172,17 +184,17 @@ public class DrawGraph extends View {
                         paint.setColor(Color.RED);
                         paint.setTextAlign(Paint.Align.CENTER);
                         paint.setTextSize(20f);
-                        if((x > (widthCanvas - 60)) && (y > (heightCanvas - 60))){
+                        if ((x > (widthCanvas - 60)) && (y > (heightCanvas - 60))) {
 //                            canvas.drawText("xóa", widthCanvas - 100, heightCanvas - 100, paint);
 
                             int edgeStarVertex;
                             for (edgeStarVertex = 0; edgeStarVertex < edgeStart.size(); edgeStarVertex++) {
                                 //If this edge has chooseVertex => remove
-                               if ((edgeStart.get(edgeStarVertex) == chooseVertex) || (edgeEnd.get(edgeStarVertex) == chooseVertex)) {
+                                if ((edgeStart.get(edgeStarVertex) == chooseVertex) || (edgeEnd.get(edgeStarVertex) == chooseVertex)) {
                                     edgeStart.remove(edgeStarVertex);
                                     edgeEnd.remove(edgeStarVertex);
                                     edgeStarVertex--;
-                               }
+                                }
                             }
                             for (edgeStarVertex = 0; edgeStarVertex < edgeStart.size(); edgeStarVertex++) {
                                 //Change vertex of all edge
