@@ -222,6 +222,7 @@ public class Graph {
     }
 
     public void chooseVertexStart() {
+        //Save this graph now
         Graph tempGraph = new Graph(this);
         int res = this.isEulerian();
         if (res == 2) {
@@ -233,6 +234,7 @@ public class Graph {
                         System.out.println(i);
                         this.printEulerian(i);
                         this.coppyGraph(tempGraph);
+                        //After printEulerian, graph change => coppy tempGraph to this graph
                         return;
                     }
                 }
