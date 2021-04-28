@@ -16,3 +16,5 @@ Definition
     The definition and properties of Eulerian trails, cycles and graphs are valid for multigraphs as well.
 
     An Eulerian orientation of an undirected graph G is an assignment of a direction to each edge of G such that, at each vertex v, the indegree of v equals the outdegree of v. Such an orientation exists for any undirected graph in which every vertex has even degree, and may be found by constructing an Euler tour in each connected component of G and then orienting the edges according to the tour. Every Eulerian orientation of a connected graph is a strong orientation, an orientation that makes the resulting directed graph strongly connected.
+
+[Demo](https://youtu.be/wS6r1JkrA9Y)
